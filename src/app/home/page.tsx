@@ -47,10 +47,11 @@ export default function Home() {
       <div className="flex flex-row justify-around overflow-x-scroll bg-emerald-400 h-auto p-5">
         {filteredMovies.length > 0 ? filteredMovies.map((movie) => (
           <Link
-            href={"/home"}
+            href={{
+              pathname: `/movies/${movie.id}`
+            }}
             className="mr-5 hover:blur-xs hover:opacity-70"
             key={movie.id}
-            scroll
           >
             <MovieCard
               title={movie.title || ""}

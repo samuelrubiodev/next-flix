@@ -5,11 +5,11 @@ import moviedb from "../../lib/tmdb";
 
 export async function GET(request: NextRequest) {
   try {
-    const { results } = await moviedb.moviePopular({
-      page: Number(request.nextUrl.searchParams.get("page")) || 1,
-      language: "en-US"
-    });
-    return NextResponse.json({ results });
+    const movie = await moviedb.movieInfo({
+      id: request.nextUrl.searchParams.get("id") || 0, 
+      language: "en-US"}
+    );
+    return NextResponse.json({ movie });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
