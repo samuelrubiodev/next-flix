@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
   try {
     const { results } = await moviedb.moviePopular({
       page: Number(request.nextUrl.searchParams.get("page")) || 1,
-      language: "en-US"
+      language: "es-ES"
     });
     return NextResponse.json({ results });
   } catch (error) {

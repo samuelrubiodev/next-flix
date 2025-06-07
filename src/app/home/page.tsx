@@ -4,9 +4,28 @@ import Link from "next/link"
 import MovieCard from "../components/ui/MovieCard"
 import { useEffect, useState } from "react"
 import { MovieResult } from "moviedb-promise";
+import SearchMovie from "../components/ui/SearchMovie";
 
 export default function Home() {  
-  const [movies, setMovies] = useState<MovieResult[]>();
+  const [allMovies, setAllMovies] = useState<MovieResult[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchMovies = async () => {
+      const response = await fetch("/api/movies?" + new URLSearchParams({
+        page: "1"
+      }).toString());
+      const data = await response.json();
+      setAllMovies(data.results as MovieResult[]);
+    };
+    fetchMovies();
+  },[]);
+
+  const filteredMovies = searchTerm.trim() === "" 
+    ? allMovies
+    : allMovies.filter(movie => 
+      movie.title?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   useEffect(() => {
     const movies = async () => {
@@ -14,16 +33,19 @@ export default function Home() {
         page: "1"
       }).toString());
       const data = await response.json();
-      setMovies(data.results as MovieResult[]);
+      setAllMovies(data.results as MovieResult[]);
     };
     movies();
-
   },[])
 
   return (
     <div>
-      <div className="flex flex-row justify-around overflow-x-scroll pb-4 mr-1 bg-emerald-400 h-auto">
-        {movies ? movies.map((movie) => (
+      <SearchMovie 
+        onSearchChange={(newSearchTerm: string) => {setSearchTerm(newSearchTerm);}}
+      />
+      <h1 className="text-3xl m-5">Popular Movies</h1>
+      <div className="flex flex-row justify-around overflow-x-scroll bg-emerald-400 h-auto p-5">
+        {filteredMovies.length > 0 ? filteredMovies.map((movie) => (
           <Link
             href={"/home"}
             className="mr-5 hover:blur-xs hover:opacity-70"
@@ -39,7 +61,7 @@ export default function Home() {
               voteAverage={movie.vote_average || 0}
             />
           </Link>
-        )) : null}
+        )) : <p className="text-white">No movies found.</p>}
       </div>
     </div>
   )
