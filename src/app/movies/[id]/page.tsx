@@ -109,18 +109,21 @@ export default function Page({
           {actualMovie.genres?.map((genre) => (
             <span
               key={genre.id}
-              className="mr-2 px-2 py-1 bg-green-200 rounded text-sm"
+              className="mr-2 px-2 py-1 bg-green-200 rounded text-sm hover:bg-green-400 hover:cursor-pointer"
             >
               {genre.name}
             </span>
           ))}
-          <p className="mr-2">{`${Math.floor(Number(actualMovie.runtime) / 60)} hours ${Number(actualMovie.runtime) % 60} minutes`}</p>
+          <p className="mr-2">{`
+            ${Math.floor(Number(actualMovie.runtime) / 60)} hours 
+            ${Number(actualMovie.runtime) % 60} minutes`}</p>
         </div>
         <p>{actualMovie.overview}</p>
         <div className="flex flex-row">
           <p className="mt-5 text-2xl rounded-full border-3 border-green-700 flex justify-center items-center w-15 h-15 font-bold bg-white">
             {`${Math.round(Number(actualMovie.vote_average) * 10)}%`}
           </p>
+          <p className="flex justify-center items-center">User Ratings</p>
         </div>
       </div>
     </div>
