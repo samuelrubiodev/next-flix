@@ -30,7 +30,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f0f0f0; /* Scrollbar track */
+  background: rgba(147, 147, 147, 0.5); /* Scrollbar track */
 }
 
 ::-webkit-scrollbar-thumb {

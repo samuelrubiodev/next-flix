@@ -43,8 +43,8 @@ export default function Home() {
       <SearchMovie 
         onSearchChange={(newSearchTerm: string) => {setSearchTerm(newSearchTerm);}}
       />
-      <h1 className="text-3xl m-5">Popular Movies</h1>
-      <div className="flex flex-row justify-around overflow-x-scroll bg-emerald-400 h-auto p-5">
+      <h1 className="text-3xl m-2">Popular Movies</h1>
+      <div className="flex flex-row justify-around overflow-x-scroll bg-emerald-400 pl-5 pr-5 pb-5 pt-5">
         {filteredMovies.length > 0 ? filteredMovies.map((movie) => (
           <Link
             href={{

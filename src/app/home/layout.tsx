@@ -18,12 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${firaSans.className} ${firaSans.className} antialiased`}
-      >
+    <>
+      <main className={`${firaSans.className} ${firaSans.className} antialiased`}>
         {children}
-      </body>
-    </html>
+      </main>
+    </>
   );
 }
