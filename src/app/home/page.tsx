@@ -44,13 +44,14 @@ export default function Home() {
         onSearchChange={(newSearchTerm: string) => {setSearchTerm(newSearchTerm);}}
       />
       <h1 className="text-3xl m-2">Popular Movies</h1>
-      <div className="flex flex-row justify-around overflow-x-scroll bg-white pl-5 pr-5 pb-5 pt-5">
+      <div className="flex flex-row justify-around overflow-x-scroll overflow-y-hidden h-full w-full bg-white pl-5 pr-5 pb-5 pt-5"
+      >
         {filteredMovies.length > 0 ? filteredMovies.map((movie) => (
           <Link
             href={{
               pathname: `/movies/${movie.id}`
             }}
-            className="mr-5 hover:blur-xs hover:opacity-70"
+            className="mr-5 hover:transform-[scale(1.05)] transition-all duration-150 ease-in-out"
             key={movie.id}
           >
             <MovieCard

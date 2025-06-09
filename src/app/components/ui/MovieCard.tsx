@@ -22,9 +22,9 @@ export default function MovieCard(props: MovieCardProps) {
           priority
         />
       </div>
-      <div className="flex wrap-anywhere justify-between items-center  text-black">
-        <div className="text-3xl rounded-2xl border-2 m-2 p-2 bg-emerald-200">
-          {Math.round(props.voteAverage)}
+      <div className="flex wrap-anywhere justify-between items-center text-black">
+        <div className="text-4xl m-2 p-1 bg-emerald-200 border-s-3 rounded-br-2xl rounded-e-2xl">
+          {`${Math.round(props.voteAverage)}`}
         </div>
         <h1 className="m-2" >{props.title} {`(${props.relaseDate.getFullYear()})`}</h1>
       </div>

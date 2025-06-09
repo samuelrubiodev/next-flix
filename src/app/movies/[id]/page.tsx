@@ -3,6 +3,7 @@ import { MovieResponse } from "moviedb-promise";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { OrbitProgress } from "react-loading-indicators";
 
 /*
 export async function generateMetadata({
@@ -61,7 +62,7 @@ export default function Page({
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p>Cargando detalles de la película...</p>
+        <OrbitProgress color="blue" size="large" text="" textColor="" easing="ease-in-out" />
       </div>
     );
   }
