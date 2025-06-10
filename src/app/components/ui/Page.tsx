@@ -1,6 +1,6 @@
 type PageProps = {
   pages: number[],
-  onChange: Function
+  onChange: () => void
 }
 
 export default function Page(props: PageProps) {
