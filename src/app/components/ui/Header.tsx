@@ -13,9 +13,12 @@ export default function Header() {
         <Link className="m-5 text-xl hover:text-amber-200" href={"/home"}>Movies</Link>
         <Link className="m-5 text-xl hover:text-amber-200" href={"/home"}>Series</Link>
       </div>
-      <Link className="m-5 text-xl flex flex-row items-center hover:text-amber-200" href={"/home"}>
-        <CircleUserRound size={30} className="mr-2" />
-        <p>My Account</p>
+        <Link 
+          className="m-5 text-xl flex flex-row items-center hover:text-amber-200" 
+          href={"https://github.com/samuelrubiodev"} 
+          target="_blank">
+            <CircleUserRound size={30} className="mr-2" />
+            <p>My Account</p>
       </Link>
     </header>
   );

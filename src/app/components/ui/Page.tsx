@@ -10,7 +10,7 @@ export default function Page(props: PageProps) {
         <div className="flex flex-row">
           {props.pages.map((page) => (
             <div 
-              className="ml-2 border-2 rounded-2xl w-10 hover:cursor-pointer hover:bg-gray-500" 
+              className="ml-2 border-2 rounded-2xl w-10 hover:cursor-pointer hover:bg-gray-500 transition-all duration-150 ease-in-out" 
               onClick={() => props.onChange()} 
               key={page}>
                 <p className="flex justify-center">{page}</p>

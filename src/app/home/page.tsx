@@ -45,7 +45,7 @@ export default function Home() {
         onSearchChange={(newSearchTerm: string) => {setSearchTerm(newSearchTerm);}}
       />
       <h1 className="text-3xl mt-5 mb-5 ml-2">Popular Movies</h1>
-      <div className="flex flex-row justify-around overflow-x-scroll overflow-y-hidden h-full w-full bg-white pl-5 pr-5 pb-5 pt-5"
+      <div className="flex flex-row justify-around overflow-x-scroll overflow-y-hidden h-full bg-white pl-5 pr-5 pb-5 pt-5 rounded-2xl border-2 mr-2 ml-2"
       >
         {filteredMovies.length > 0 ? filteredMovies.map((movie) => (
           <Link
