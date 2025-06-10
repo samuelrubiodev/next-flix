@@ -104,7 +104,6 @@ export default function Page({
               ? `(${new Date(actualMovie.release_date).getFullYear()})`
               : ""}
           </Link>
-
         </h1>
         <div className="flex flex-row mb-2 mt-2 items-center">
           {actualMovie.genres?.map((genre) => (
@@ -124,7 +123,7 @@ export default function Page({
           <p className="mt-5 text-2xl rounded-full border-3 border-green-700 flex justify-center items-center w-15 h-15 font-bold bg-white">
             {`${Math.round(Number(actualMovie.vote_average) * 10)}%`}
           </p>
-          <p className="flex justify-center items-center">User Ratings</p>
+          <p className="flex self-center mt-4 ml-2">User Ratings</p>
         </div>
       </div>
     </div>
