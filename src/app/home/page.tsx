@@ -5,6 +5,7 @@ import MovieCard from "../components/ui/MovieCard"
 import { useEffect, useState } from "react"
 import { MovieResult } from "moviedb-promise";
 import SearchMovie from "../components/ui/SearchMovie";
+import Page from "../components/ui/Page";
 
 export default function Home() {  
   const [allMovies, setAllMovies] = useState<MovieResult[]>([]);
@@ -43,7 +44,7 @@ export default function Home() {
       <SearchMovie 
         onSearchChange={(newSearchTerm: string) => {setSearchTerm(newSearchTerm);}}
       />
-      <h1 className="text-3xl m-2">Popular Movies</h1>
+      <h1 className="text-3xl mt-5 mb-5 ml-2">Popular Movies</h1>
       <div className="flex flex-row justify-around overflow-x-scroll overflow-y-hidden h-full w-full bg-white pl-5 pr-5 pb-5 pt-5"
       >
         {filteredMovies.length > 0 ? filteredMovies.map((movie) => (
@@ -65,6 +66,10 @@ export default function Home() {
           </Link>
         )) : <p className="text-white">No movies found.</p>}
       </div>
+      <Page 
+        onChange={() => {console.log("test")}}
+        pages={[1,2,3,4]}
+      />
     </div>
   )
 }
