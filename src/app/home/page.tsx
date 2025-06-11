@@ -1,26 +1,28 @@
 "use client";
 
 import Link from "next/link"
-import MovieCard from "../components/ui/MovieCard"
+import MovieCard from "../components/ui/Actions/MovieCard"
 import { useEffect, useState } from "react"
-import { MovieResult } from "moviedb-promise";
+import { MovieResult, TvResult } from "moviedb-promise";
 import SearchMovie from "../components/ui/SearchMovie";
 import Page from "../components/ui/Page";
+import { useSearchParams } from 'next/navigation'
+import Switch from "../components/ui/Switch";
+import MovieAction from "@/actions/MovieAction";
+import IRequestAction from "@/actions/IRequestAction";
+import TvAction from "@/actions/TvAction";
 
-export default function Home() {  
+const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
+  new MovieAction(1, <></>),
+  new TvAction(1, <></>)
+];
+
+export default function Home() {
   const [allMovies, setAllMovies] = useState<MovieResult[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    const fetchMovies = async () => {
-      const response = await fetch("/api/movies?" + new URLSearchParams({
-        page: "1"
-      }).toString());
-      const data = await response.json();
-      setAllMovies(data.results as MovieResult[]);
-    };
-    fetchMovies();
-  },[]);
+  const searchParams = useSearchParams();
+  const search = searchParams.get('search');
 
   const filteredMovies = searchTerm.trim() === "" 
     ? allMovies
@@ -29,14 +31,8 @@ export default function Home() {
     );
 
   useEffect(() => {
-    const movies = async () => {
-      const response = await fetch("/api/movies?" + new URLSearchParams({
-        page: "1"
-      }).toString());
-      const data = await response.json();
-      setAllMovies(data.results as MovieResult[]);
-    };
-    movies();
+    const movies = new MovieAction(1, <></>);
+    movies.sendRequest().then(setAllMovies);
   },[])
 
   return (
@@ -44,7 +40,17 @@ export default function Home() {
       <SearchMovie 
         onSearchChange={(newSearchTerm: string) => {setSearchTerm(newSearchTerm);}}
       />
-      <h1 className="text-3xl mt-5 mb-5 ml-2">Popular Movies</h1>
+      <div className="flex flex-row items-center h-full w-full">
+        <h1 className="text-3xl mt-5 mb-5 ml-2">Popular</h1>
+        <Switch 
+          className="flex justify-center ml-2 w-60 h-10"
+          onChange={(selectedIndex) => {console.log(selectedIndex)}}
+        >
+          <p key={"movies"}>Movies</p>
+          <p key={"tv_shows"}>TV Shows</p>
+        </Switch>
+      </div>
+
       <div className="flex flex-row justify-around overflow-x-scroll overflow-y-hidden h-full bg-white pl-5 pr-5 pb-5 pt-5 rounded-2xl border-2 mr-2 ml-2"
       >
         {filteredMovies.length > 0 ? filteredMovies.map((movie) => (
