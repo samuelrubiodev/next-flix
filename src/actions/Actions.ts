@@ -1,22 +1,27 @@
+import { JSX } from "react";
 import IRequestAction from "./IRequestAction";
+import NotFound from "@/app/not-found";
 
-export default class Actions {
-    private actions: IRequestAction<any>[] = [];
+export default class Actions<T = unknown> {
+  private actions: IRequestAction<T>[] = [];
     
-    public addAction(action: IRequestAction<any>): void {
-        this.actions.push(action);
+  public async addAction(action: IRequestAction<T>): Promise<void> {
+    this.actions.push(action);
+
+    await action.sendRequest().then((result) => {
+      console.log("Action result:", result);
+    });
+  }
+
+  public getActionByActionSelected(actionSelected: number, searchTerm: string): JSX.Element {
+    const action = this.actions.find((action, id) => id === actionSelected);
+    if (!action) {
+      return NotFound();
     }
+    return action.getElement(searchTerm);
+  }
     
-    public async executeAll(): Promise<any[]> {
-        const results: any[] = [];
-        for (const action of this.actions) {
-            const result = await action.sendRequest();
-            results.push(result);
-        }
-        return results;
-    }
-    
-    public getActions(): IRequestAction<any>[] {
-        return this.actions;
-    }
+  public getActions(): IRequestAction<T>[] {
+      return this.actions;
+  }
 }

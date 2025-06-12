@@ -9,6 +9,10 @@ type SwitchProps = {
 export default function Switch(props: SwitchProps) {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, []);
+
   return (
     <div className={props.className}>
       <div className={`flex rounded-2xl border-2 border-gray-400 bg-gray-400 w-full h-full`}>

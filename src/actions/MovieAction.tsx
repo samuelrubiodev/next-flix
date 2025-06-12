@@ -1,18 +1,30 @@
 import { MovieResult } from "moviedb-promise";
 import IRequestAction from "./IRequestAction";
-import { JSX } from "react";
+import React, { JSX } from "react";
+import Movies from "@/app/components/ui/Actions/Movies/Movies";
 
 export default class MovieAction implements IRequestAction<MovieResult[]> {
     private page: number;
+    private name: string;
     private element: JSX.Element;
+    private results: MovieResult[] = [];
 
     constructor(page: number, element: JSX.Element) {
         this.page = page;
         this.element = element;
+        this.name = "movies";
     }
 
-    get Element(): JSX.Element {
-        return this.element;
+    public getName(): string {
+        return this.name;
+    }
+
+    getElement(searchTerm: string): JSX.Element {
+        return Movies({movies: this.results, searchTerm: searchTerm});
+    }
+
+    get Results(): MovieResult[] {
+        return this.results;
     }
 
     public async sendRequest(): Promise<MovieResult[]> {
@@ -20,6 +32,7 @@ export default class MovieAction implements IRequestAction<MovieResult[]> {
             page: this.page.toString()
         }).toString());
         const data = await response.json();
-        return data.results as MovieResult[];
+        this.results = data.results as MovieResult[];
+        return this.results;
     }
 }
