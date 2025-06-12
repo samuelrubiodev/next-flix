@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { MovieResult, TvResult } from "moviedb-promise";
 import SearchMovie from "../components/ui/SearchMovie";
 import Page from "../components/ui/Page";
@@ -18,7 +18,7 @@ const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
   new TvAction(1)
 ];
 
-export default function Home() {
+function HomeContent() {
   const [allActions, setActions] = useState<Actions>(new Actions());
   const [searchTerm, setSearchTerm] = useState("");
   const [actionSelected, setAction] = useState<number>(0);
@@ -74,5 +74,13 @@ export default function Home() {
         pages={[1,2,3,4]}
       />
     </div>
-  )
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense fallback={<OrbitProgress color="blue" size="large" easing="ease-in-out" />}>
+      <HomeContent />
+    </Suspense>
+  );
 }
