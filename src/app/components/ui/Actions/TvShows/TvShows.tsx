@@ -19,7 +19,7 @@ export default function TvShows(props: TvShowsProps) {
       {filteredMovies.length > 0 ? filteredMovies.map((tvShow) => (
         <Link
           href={{
-            pathname: `/movies/${tvShow.id}`
+            pathname: `/tvShows/${tvShow.id}`
           }}
           className="mr-5 hover:transform-[scale(1.05)] transition-all duration-150 ease-in-out"
           key={tvShow.id}

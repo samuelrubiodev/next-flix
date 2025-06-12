@@ -7,6 +7,7 @@ export default class TvAction implements IRequestAction<TvResult[]> {
     private page: number;
     private name: string;
     private results: TvResult[] = [];
+    public static NUMBER_OPTION: number = 1;
 
     constructor(page = 1) {
         this.page = page;

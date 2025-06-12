@@ -10,8 +10,8 @@ export default function Header() {
         <p>Home</p>
       </Link>
       <div className="w-1/2 flex justify-center">
-        <Link className="m-5 text-xl hover:text-amber-200" href={"/home"}>Movies</Link>
-        <Link className="m-5 text-xl hover:text-amber-200" href={"/home"}>Series</Link>
+        <Link className="m-5 text-xl hover:text-amber-200" href={"/home?entertainmentContent=0"}>Movies</Link>
+        <Link className="m-5 text-xl hover:text-amber-200" href={"/home?entertainmentContent=1"}>Series</Link>
       </div>
         <Link 
           className="m-5 text-xl flex flex-row items-center hover:text-amber-200" 

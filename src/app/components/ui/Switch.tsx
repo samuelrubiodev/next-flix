@@ -1,17 +1,14 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 
 type SwitchProps = {
   children: ReactElement[],
   className?: string,
+  selectedIndex?: number,
   onChange: (selectedIndex: number) => void
 };
 
 export default function Switch(props: SwitchProps) {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, []);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(props.selectedIndex || 0);
 
   return (
     <div className={props.className}>

@@ -7,6 +7,7 @@ export default class MovieAction implements IRequestAction<MovieResult[]> {
     private page: number;
     private name: string;
     private results: MovieResult[] = [];
+    public static NUMBER_OPTION: number = 0
 
     constructor(page: number) {
         this.page = page;

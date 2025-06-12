@@ -1,21 +1,9 @@
 "use client";
-import { MovieResponse } from "moviedb-promise";
+import { ShowResponse } from "moviedb-promise";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { OrbitProgress } from "react-loading-indicators";
-
-/*
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
-  const id = params.id;
-  const response = await fetch("/api/movie?" + new URLSearchParams({ id }).toString());
-  const data = await response.json();
-  return {
-    title: data.movieData.title,
-  };
-*/
 
 export default function Page({
   params,
@@ -23,7 +11,7 @@ export default function Page({
   params: Promise<{ id: string }>
 }) {
   const { id } = React.use(params);
-  const [actualMovie, setActualMovie] = useState<MovieResponse | null>(null);
+  const [actualMovie, setActualMovie] = useState<ShowResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -37,19 +25,20 @@ export default function Page({
 
     const fetchMovieData = async () => {
       try {
-        const response = await fetch("/api/movie?" + new URLSearchParams({ id }).toString());
+        const response = await fetch("/api/tv/show?" + new URLSearchParams({ id }).toString());
         if (!response.ok) {
           const errorText = await response.text();
           console.error("API Error:", response.status, errorText);
-          setError(`Error ${response.status}: No se pudo cargar la película.`);
+          setError(`Error ${response.status}: No se pudo cargar la serie.`);
           setActualMovie(null);
           return;
         }
         const data = await response.json();
-        setActualMovie(data.movieData as MovieResponse);
+        setActualMovie(data.tvData as ShowResponse);
+        console.log(data.tvData);
       } catch (e) {
         console.error("Error en fetch:", e);
-        setError("Ocurrió un error al obtener los detalles de la película.");
+        setError("Ocurrió un error al obtener los detalles de la serie.");
         setActualMovie(null);
       } finally {
         setLoading(false);
@@ -78,13 +67,13 @@ export default function Page({
   if (!actualMovie) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p>No se encontró la película o los datos no están disponibles.</p>
+        <p>No se encontró la serie o los datos no están disponibles.</p>
       </div>
     );
   }
 
   return (
-    <div
+    <div 
       className="min-h-screen w-full relative "
       style={{
         minHeight: 'calc(100vh - 120px)'
@@ -96,7 +85,7 @@ export default function Page({
           backgroundImage: `url(https://image.tmdb.org/t/p/original${actualMovie.backdrop_path || ""})`,
         }}
       />
-
+      
       <div className="relative z-10 flex justify-center pt-5 w-5xl h-auto justify-self-center bg-gray-300">
         <Image
           src={`https://image.tmdb.org/t/p/w500${actualMovie.poster_path || ""}`}
@@ -112,9 +101,9 @@ export default function Page({
               href={actualMovie.homepage || ""}
               target="_blank"
               >
-              {actualMovie.title}{" "}
-              {actualMovie.release_date
-                ? `(${new Date(actualMovie.release_date).getFullYear()})`
+              {actualMovie.name}{" "}
+              {actualMovie.first_air_date
+                ? `(${new Date(actualMovie.first_air_date).getFullYear()})`
                 : ""}
             </Link>
           </h1>
@@ -127,9 +116,7 @@ export default function Page({
                 {genre.name}
               </span>
             ))}
-            <p className="mr-2">{`
-              ${Math.floor(Number(actualMovie.runtime) / 60)} hours 
-              ${Number(actualMovie.runtime) % 60} minutes`}</p>
+            <p className="mr-2">{actualMovie.number_of_episodes} episodes</p>
           </div>
           <p>{actualMovie.overview}</p>
           <div className="flex flex-row">
@@ -141,5 +128,6 @@ export default function Page({
         </div>
       </div>
     </div>
+    
   );
 }
