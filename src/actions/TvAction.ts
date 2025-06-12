@@ -6,12 +6,10 @@ import TvShows from "@/app/components/ui/Actions/TvShows/TvShows";
 export default class TvAction implements IRequestAction<TvResult[]> {
     private page: number;
     private name: string;
-    private element: ReactElement;
     private results: TvResult[] = [];
 
-    constructor(page: number, element: ReactElement) {
+    constructor(page = 1) {
         this.page = page;
-        this.element = element;
         this.name = "tv";
     }
 

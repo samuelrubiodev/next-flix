@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState } from "react"
@@ -13,8 +14,8 @@ import Actions from "@/actions/Actions";
 import { OrbitProgress } from "react-loading-indicators";
 
 const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
-  new MovieAction(1, <></>),
-  new TvAction(1, <></>)
+  new MovieAction(1),
+  new TvAction(1)
 ];
 
 export default function Home() {

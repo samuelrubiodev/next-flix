@@ -1,17 +1,15 @@
 import { MovieResult } from "moviedb-promise";
 import IRequestAction from "./IRequestAction";
-import React, { JSX } from "react";
+import { JSX } from "react";
 import Movies from "@/app/components/ui/Actions/Movies/Movies";
 
 export default class MovieAction implements IRequestAction<MovieResult[]> {
     private page: number;
     private name: string;
-    private element: JSX.Element;
     private results: MovieResult[] = [];
 
-    constructor(page: number, element: JSX.Element) {
+    constructor(page: number) {
         this.page = page;
-        this.element = element;
         this.name = "movies";
     }
 
