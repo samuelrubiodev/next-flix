@@ -1,6 +1,6 @@
 import { TvResult } from "moviedb-promise";
 import IRequestAction from "./IRequestAction";
-import { JSX, ReactElement } from "react";
+import { JSX } from "react";
 import TvShows from "@/app/components/ui/Actions/TvShows/TvShows";
 
 export default class TvAction implements IRequestAction<TvResult[]> {
