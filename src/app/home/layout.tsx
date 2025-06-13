@@ -25,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <>
-      <main className={`${firaSans.className} antialiased`}>
+      <main 
+        className={`${firaSans.className} antialiased`}
+        suppressHydrationWarning>
         {children}
       </main>
     </>

@@ -4,9 +4,17 @@ import NotFound from "@/app/not-found";
 
 export default class Actions<T = unknown> {
   private actions: IRequestAction<T>[] = [];
+
+  private setPage(page:number) {
+    this.actions.forEach((action) => {
+      action.setPage(page);
+    });
+  }
     
-  public async addAction(action: IRequestAction<T>): Promise<void> {
+  public async addAction(action: IRequestAction<T>, page: number): Promise<void> {
+    this.actions.splice(1,this.actions.length);
     this.actions.push(action);
+    this.setPage(page);
 
     await action.sendRequest().then((result) => {
       console.log("Action result:", result);

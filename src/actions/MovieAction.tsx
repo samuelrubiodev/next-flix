@@ -14,6 +14,10 @@ export default class MovieAction implements IRequestAction<MovieResult[]> {
         this.name = "movies";
     }
 
+    setPage(page: number): void {
+        this.page = page;
+    }
+
     public getName(): string {
         return this.name;
     }

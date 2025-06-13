@@ -14,6 +14,8 @@ export default class TvAction implements IRequestAction<TvResult[]> {
         this.name = "tv";
     }
 
+    setPage(page:number) { this.page = page; }
+
     public getName(): string {
         return this.name;
     }

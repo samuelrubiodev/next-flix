@@ -33,7 +33,7 @@ export default function Movies(props: MoviesProps) {
           voteAverage={movie.vote_average || 0}
         />
       </Link>
-    ) ) : <p className="text-white">No movies found.</p>}
+    ) ) : <p className="text-black">No movies found.</p>}
     </>
   );
 }

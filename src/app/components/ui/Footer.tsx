@@ -17,7 +17,6 @@ export default function Footer() {
         </div>
         <div className="absolute bottom-0 left-0 w-full">
           <div className="relative flex flex-row justify-center">
-            <p>© 2025 Next Flix | </p>
             <Link href={"https://github.com/samuelrubiodev/next-flix"} 
               target="_blank"
               className="flex flex-row items-center justify-center ml-2 hover:cursor-pointer hover:underline">

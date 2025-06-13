@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState, Suspense } from "react"
 import { MovieResult, TvResult } from "moviedb-promise";
 import SearchMovie from "../components/ui/SearchMovie";
 import Page from "../components/ui/Page";
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useSearchParams, useRouter } from 'next/navigation';
 import Switch from "../components/ui/Switch";
 import MovieAction from "@/actions/MovieAction";
 import IRequestAction from "@/actions/IRequestAction";
@@ -20,11 +19,13 @@ const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
 
 function HomeContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [allActions, setActions] = useState<Actions>(new Actions());
   const [searchTerm, setSearchTerm] = useState("");
   const [actionSelected, setActionSelected] = useState<number>(MovieAction.NUMBER_OPTION);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [page, setPage] = useState(1);
+  
   const entertainmentContent = searchParams.get('entertainmentContent');
 
   useEffect(() => {
@@ -32,16 +33,16 @@ function HomeContent() {
       setIsLoading(true);
       const newActions = new Actions();
 
-      await Promise.all(actions.map(action => newActions.addAction(action)));
+      await Promise.all(actions.map(action => newActions.addAction(action,page)));
 
       setActions(newActions);
       setIsLoading(false);
     };
     initializeActions();
-  },[entertainmentContent])
+  },[page])
 
   useEffect(() => {
-    setActionSelected(Number(entertainmentContent) || MovieAction.NUMBER_OPTION);
+    setActionSelected(Number(entertainmentContent) || 0);
   },[entertainmentContent])
 
   const filteredContent = () => {
@@ -64,7 +65,10 @@ function HomeContent() {
         {!isLoading 
           ? <Switch 
               className="flex justify-center ml-2 w-60 h-10"
-              onChange={setActionSelected}
+              onChange={(index) => {
+                setActionSelected(index);
+                router.push(`/home?entertainmentContent=${index}`)
+              }}
               selectedIndex={actionSelected}
             >
               <p key={"movies"}>Movies</p>
@@ -79,7 +83,8 @@ function HomeContent() {
         {filteredContent()}
       </div>
       <Page 
-        onChange={() => {console.log("test page")}}
+        onChange={setPage}
+        defaultPage={1}
         pages={[1,2,3,4]}
       />
     </div>

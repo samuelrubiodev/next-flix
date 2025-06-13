@@ -33,7 +33,7 @@ export default function TvShows(props: TvShowsProps) {
           vote_average={tvShow.vote_average || 0}
         />
       </Link>
-      )) : <p className="text-white">No movies found.</p>}
+      )) : <p className="text-black">No series found.</p>}
     </>
   )
 }

@@ -20,7 +20,7 @@ export default function Switch(props: SwitchProps) {
             <div 
               className={`text-xl ml-2 rounded-sm pl-2 pr-2 border-0 hover:cursor-pointer hover:bg-slate-600 ${
                 selectedIndex === i ? 'bg-slate-500' : 'bg-transparent'
-              }`}
+              } transition-all duration-150 ease-in-out`}
               key={i}
               onClick={() => {
                 setSelectedIndex(i);
