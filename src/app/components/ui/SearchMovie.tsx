@@ -20,9 +20,9 @@ export default function SearchMovie(props: SearchMovieProps) {
   return (
     <div className="bg-slate-300 h-15 ml-2 mr-2 text-slate-300 focus-within:text-[#c3defd] rounded-2xl border-2 
         border-black flex flex-row items-center justify-center p-2 
-        focus-within:bg-[#bdcbdb] transition-colors duration-150 ease-in-out"
+        focus-within:bg-[#bdcbdb] transition-colors duration-150 ease-in-out flex-grow"
       >
-        <Search size={30} color="black"/>
+        <Search size={30} color="black" />
         <input 
           type="text" 
           id="input" 

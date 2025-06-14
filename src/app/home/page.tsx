@@ -11,10 +11,13 @@ import IRequestAction from "@/actions/IRequestAction";
 import TvAction from "@/actions/TvAction";
 import Actions from "@/actions/Actions";
 import { OrbitProgress } from "react-loading-indicators";
+import TvShowsRequest from "@/actions/requests/Tv/TvShowsRequest";
+import MoviesRequest from "@/actions/requests/Movie/MoviesRequest";
+import Movies from "../components/ui/Actions/Movies/Movies";
 
 const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
-  new MovieAction(1),
-  new TvAction(1)
+  new MovieAction(1,new MoviesRequest(),Movies),
+  new TvAction(1,new TvShowsRequest())
 ];
 
 function HomeContent() {
@@ -61,7 +64,7 @@ function HomeContent() {
       <SearchMovie
         text={searchTerm}
         onSearchChange={(term: string) => {
-          router.push(`/home?entertainmentContent=${entertainmentContent}&search=${term}`);
+          router.push(`/home?entertainmentContent=${actionSelected}&search=${term}`);
           setSearchTerm(term);
         }}
       />

@@ -1,9 +1,8 @@
 import { JSX } from "react";
 
 export default interface IRequestAction<O> {
-    sendRequest: () => Promise<O>;
+    sendRequestAction: () => Promise<O>;
     getElement(searchTerm: string): JSX.Element;
     get Results(): O;
     setPage(page:number): void;
-    getName: () => string;
 }

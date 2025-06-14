@@ -10,9 +10,12 @@ export default function Footer() {
             <HomeIcon size={20} className="mr-2"/>
             <p>Home</p>
           </Link>
-          <Link href={"/home"} className="hover:cursor-pointer hover:text-black m-2 flex flex-row items-center">
-            <CircleUserRound size={20} className="mr-2" />
-            <p>My Account</p>
+          <Link 
+            href={"https://github.com/samuelrubiodev"} 
+            target="_blank" 
+            className="hover:cursor-pointer hover:text-black m-2 flex flex-row items-center">
+              <CircleUserRound size={20} className="mr-2" />
+              <p>My Account</p>
           </Link>
         </div>
         <div className="absolute bottom-0 left-0 w-full">

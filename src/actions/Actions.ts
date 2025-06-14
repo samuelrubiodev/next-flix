@@ -16,7 +16,7 @@ export default class Actions<T = unknown> {
     this.actions.push(action);
     this.setPage(page);
 
-    await action.sendRequest().then((result) => {
+    await action.sendRequestAction().then((result) => {
       console.log("Action result:", result);
     });
   }
@@ -27,9 +27,5 @@ export default class Actions<T = unknown> {
       return NotFound();
     }
     return action.getElement(searchTerm);
-  }
-    
-  public getActions(): IRequestAction<T>[] {
-      return this.actions;
   }
 }
