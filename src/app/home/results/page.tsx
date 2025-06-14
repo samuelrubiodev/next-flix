@@ -7,7 +7,7 @@ import Movies from "@/app/components/ui/Actions/Movies/Movies";
 import { OrbitProgress } from "react-loading-indicators";
 import SearchMovie from "@/app/components/ui/SearchMovie";
 
-export function ResultsContent() {
+function ResultsContent() {
   const searchParams = useSearchParams();
   const search = searchParams.get('search');
   const [movies, setMovies] = useState<MovieResult[]>([]);
