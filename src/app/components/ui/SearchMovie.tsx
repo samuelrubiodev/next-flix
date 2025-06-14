@@ -4,11 +4,12 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 
 export type SearchMovieProps = {
+  text?: string,
   onSearchChange: (searchTerm: string) => void;
 };
 
 export default function SearchMovie(props: SearchMovieProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(props.text || "");
   
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchTerm = event.target.value;

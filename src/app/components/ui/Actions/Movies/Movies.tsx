@@ -26,7 +26,7 @@ export default function Movies(props: MoviesProps) {
       >
         <MovieCard
           title={movie.title || ""}
-          posterImage={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : ""}
+          posterImage={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "https://placehold.co/600x900/000000/FFFFFF/png"}
           genres={[]}
           overiew={movie.overview || ""}
           relaseDate={movie.release_date ? new Date(movie.release_date) : new Date()}

@@ -19,14 +19,15 @@ const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
 
 function HomeContent() {
   const searchParams = useSearchParams();
+  const entertainmentContent = searchParams.get('entertainmentContent');
+  const search = searchParams.get('search');
+
   const router = useRouter();
   const [allActions, setActions] = useState<Actions>(new Actions());
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(search || "");
   const [actionSelected, setActionSelected] = useState<number>(MovieAction.NUMBER_OPTION);
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
-  
-  const entertainmentContent = searchParams.get('entertainmentContent');
 
   useEffect(() => {
     const initializeActions = async () => {
@@ -57,8 +58,12 @@ function HomeContent() {
 
   return (
     <div>
-      <SearchMovie 
-        onSearchChange={setSearchTerm}
+      <SearchMovie
+        text={searchTerm}
+        onSearchChange={(term: string) => {
+          router.push(`/home?entertainmentContent=${entertainmentContent}&search=${term}`);
+          setSearchTerm(term);
+        }}
       />
       <div className="flex flex-row items-center h-full w-full">
         <h1 className="text-3xl mt-5 mb-5 ml-2">Popular</h1>
@@ -66,8 +71,8 @@ function HomeContent() {
           ? <Switch 
               className="flex justify-center ml-2 w-60 h-10"
               onChange={(index) => {
+                router.push(`/home?entertainmentContent=${index}&search=${searchTerm}`);
                 setActionSelected(index);
-                router.push(`/home?entertainmentContent=${index}`)
               }}
               selectedIndex={actionSelected}
             >
