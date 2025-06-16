@@ -11,8 +11,8 @@ export default function MoviesResult(props: GenericMovieActionRequest) {
             pathname: `/movies/${movie.id}`
           }}>
           <div
-            className="mt-5 pl-2 pr-2 text-black flex flex-row items-center 
-            border-b-2 w-full border-t-2 justify-between hover:bg-amber-100 hover:cursor-pointer transition-colors duration-150 ease-in-out"
+            className="mt-5 ml-2 text-zinc-300 flex flex-row items-center 
+            border-b-2 w-full border-t-2 justify-between hover:bg-zinc-500 hover:text-white hover:cursor-pointer transition-colors duration-150 ease-in-out"
             >  
             <p>{movie.title}</p>
             <p className="text-2xl">{new Date(movie.release_date || Date.now()).toLocaleDateString()}</p>

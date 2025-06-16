@@ -48,7 +48,7 @@ export default function PopupResults(props: PopupResults) {
   };
 
   return (
-    <div className="bg-white absolute h-full w-full overflow-y-scroll overflow-x-hidden pb-10">
+    <div className="bg-black absolute h-full w-full overflow-y-scroll overflow-x-hidden pb-10 z-10">
       <div className="relative mt-5 flex flex-row items-center">
         <SearchMovie 
           onSearchChange={setSearch}
@@ -56,7 +56,7 @@ export default function PopupResults(props: PopupResults) {
         />
         <X 
           size={30} 
-          color="black" 
+          color="white" 
           className="mr-2 hover:cursor-pointer" 
           onClick={() => props.exit()}
         />

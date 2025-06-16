@@ -22,7 +22,6 @@ function ResultsContent() {
       }).toString());
       const data = await response.json();
       setMovies(data.results as MovieResult[]);
-      
     }
     fetchMovie();
     setIsLoading(false);

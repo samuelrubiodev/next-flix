@@ -86,7 +86,7 @@ function HomeContent() {
       </div>
 
       <div className="flex flex-row justify-around overflow-x-scroll overflow-y-hidden h-full 
-        bg-white pl-5 pr-5 pb-5 pt-5 rounded-2xl border-2 mr-2 ml-2"
+        pl-5 pr-5 pb-5 pt-5 rounded-2xl border-0 mr-2 ml-2 bg-transparent"
       >
         {filteredContent()}
       </div>
