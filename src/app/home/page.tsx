@@ -22,15 +22,35 @@ const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
 
 function HomeContent() {
   const searchParams = useSearchParams();
-  const entertainmentContent = searchParams.get('entertainmentContent');
-  const search = searchParams.get('search');
 
   const router = useRouter();
   const [allActions, setActions] = useState<Actions>(new Actions());
-  const [searchTerm, setSearchTerm] = useState(search || "");
-  const [actionSelected, setActionSelected] = useState<number>(MovieAction.NUMBER_OPTION);
+  const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || "");
+  const [actionSelected, setActionSelected] = useState<number>(() => {
+    const initialEntertainmentContent = searchParams.get('entertainmentContent');
+    const numericContent = Number(initialEntertainmentContent);
+    if (initialEntertainmentContent !== null && !isNaN(numericContent)) {
+      return numericContent;
+    }
+    return typeof MovieAction.NUMBER_OPTION === 'number' ? MovieAction.NUMBER_OPTION : 0;
+  });
+  
   const [isLoading, setIsLoading] = useState(true);
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const currentEntertainmentContent = searchParams.get('entertainmentContent');
+    const currentSearch = searchParams.get('search');
+
+    const numericEntertainmentContent = Number(currentEntertainmentContent);
+    if (currentEntertainmentContent !== null && !isNaN(numericEntertainmentContent)) {
+      setActionSelected(numericEntertainmentContent);
+    } else {
+      setActionSelected(typeof MovieAction.NUMBER_OPTION === 'number' ? MovieAction.NUMBER_OPTION : 0);
+    }
+
+    setSearchTerm(currentSearch || "");
+  }, [searchParams]);
 
   useEffect(() => {
     const initializeActions = async () => {
@@ -44,10 +64,6 @@ function HomeContent() {
     };
     initializeActions();
   },[page])
-
-  useEffect(() => {
-    setActionSelected(Number(entertainmentContent) || 0);
-  },[entertainmentContent])
 
   const filteredContent = () => {
     if (isLoading) {
@@ -65,7 +81,6 @@ function HomeContent() {
         text={searchTerm}
         onSearchChange={(term: string) => {
           router.push(`/home?entertainmentContent=${actionSelected}&search=${term}`);
-          setSearchTerm(term);
         }}
       />
       <div className="flex flex-row items-center h-full w-full">
@@ -75,7 +90,6 @@ function HomeContent() {
               className="flex justify-center ml-2 w-60 h-10"
               onChange={(index) => {
                 router.push(`/home?entertainmentContent=${index}&search=${searchTerm}`);
-                setActionSelected(index);
               }}
               selectedIndex={actionSelected}
             >
@@ -101,7 +115,15 @@ function HomeContent() {
 
 export default function Home() {
   return (
-    <Suspense fallback={<OrbitProgress color="blue" size="large" easing="ease-in-out" />}>
+    <Suspense 
+      fallback={
+        <OrbitProgress 
+          color="blue" 
+          size="large" 
+          easing="ease-in-out" 
+        />
+      }
+    >
       <HomeContent />
     </Suspense>
   );
