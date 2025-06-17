@@ -1,12 +1,12 @@
 import { RequestParams } from "@/actions/requests/IRequest";
 import IActionRequest from "@/actions/requests/IActionRequest";
 import NotFound from "@/app/not-found";
-import { GenericMovieActionRequest } from "@/types/actions/types";
-import { MovieResult } from "moviedb-promise";
+import { GenericShowActionRequest } from "@/types/actions/types";
+import { ShowResponse } from "moviedb-promise";
 import { JSX } from "react";
 
-export default class ActionsSingleMovies {
-  public actions: IActionRequest<MovieResult[],GenericMovieActionRequest>[] = [];
+export default class ActionsSingleTvShows {
+  public actions: IActionRequest<ShowResponse,GenericShowActionRequest>[] = [];
 
   private setPage(page:number) {
     this.actions.forEach((action) => {
@@ -14,7 +14,7 @@ export default class ActionsSingleMovies {
     });
   }
 
-  public async addAction(action: IActionRequest<MovieResult[],GenericMovieActionRequest>, params: RequestParams): Promise<void> {
+  public async addAction(action: IActionRequest<ShowResponse,GenericShowActionRequest>, params: RequestParams): Promise<void> {
     this.actions.splice(1,this.actions.length);
     this.actions.push(action);
 
@@ -23,15 +23,15 @@ export default class ActionsSingleMovies {
     });
   }
 
-  public getActionByActionSelected(actionSelected: number, props: GenericMovieActionRequest): JSX.Element {
+  public getActionByActionSelected(actionSelected: number, props: GenericShowActionRequest): JSX.Element {
     const action = this.actions.find((action, id) => id === actionSelected);
     if (!action) {
       return NotFound();
     }
     return action.getElement({ 
-      movies: [], 
+      shows: [], 
       searchTerm: props.searchTerm, 
-      movie: props.movie 
+      show: props.show 
     });
   }
 }

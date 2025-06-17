@@ -1,21 +1,17 @@
 "use client";
+
 import { MovieResponse } from "moviedb-promise";
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
 import { OrbitProgress } from "react-loading-indicators";
+import IActionRequest from "@/actions/requests/IActionRequest";
+import { GenericMovieActionRequest } from "@/types/actions/types";
+import SingleMovieRequest from "@/actions/requests/Movie/SingleMovieRequest";
+import MovieResult from "@/app/components/ui/Actions/Movies/MovieResults";
+import ActionsSingleMovies from "@/actions/movies/single/ActionsSingleMovies";
 
-/*
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
-  const id = params.id;
-  const response = await fetch("/api/movie?" + new URLSearchParams({ id }).toString());
-  const data = await response.json();
-  return {
-    title: data.movieData.title,
-  };
-*/
+const actions: IActionRequest<MovieResponse,GenericMovieActionRequest>[] = [
+  new SingleMovieRequest(1,MovieResult)
+];
 
 export default function Page({
   params,
@@ -23,9 +19,9 @@ export default function Page({
   params: Promise<{ id: string }>
 }) {
   const { id } = React.use(params);
+  const [action, setActions] = useState<ActionsSingleMovies>(new ActionsSingleMovies());
   const [actualMovie, setActualMovie] = useState<MovieResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!id) {
@@ -33,52 +29,34 @@ export default function Page({
     }
 
     setLoading(true);
-    setError(null);
 
-    const fetchMovieData = async () => {
-      try {
-        const response = await fetch("/api/movie?" + new URLSearchParams({ id }).toString());
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error("API Error:", response.status, errorText);
-          setError(`Error ${response.status}: No se pudo cargar la película.`);
-          setActualMovie(null);
-          return;
-        }
-        const data = await response.json();
-        setActualMovie(data.movieData as MovieResponse);
-      } catch (e) {
-        console.error("Error en fetch:", e);
-        setError("Ocurrió un error al obtener los detalles de la película.");
-        setActualMovie(null);
-      } finally {
-        setLoading(false);
-      }
+    const initializeActions = async () => {
+      setLoading(true);
+      const newActions = new ActionsSingleMovies();
+
+      await Promise.all(actions.map(actionObject => newActions.addAction(actionObject,{ id: Number(id) || 0 })));
+      setActions(newActions);
+
+      setActualMovie(actions[0].Results)
+      setLoading(false);
     };
-
-    fetchMovieData();
+    initializeActions();
   }, [id]); 
+
+  const filteredContent = () => {
+    if (loading) {
+      return <OrbitProgress color="blue" size="large" easing="ease-in-out" />
+    }
+
+    return action.getActionByActionSelected(
+      0,{movie: {}, movies: [], searchTerm: ""}
+    );
+  };
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <OrbitProgress color="blue" size="large" text="" textColor="" easing="ease-in-out" />
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-red-500">{error}</p>
-      </div>
-    );
-  }
-
-  if (!actualMovie) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p>No se encontró la película o los datos no están disponibles.</p>
       </div>
     );
   }
@@ -93,53 +71,11 @@ export default function Page({
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat blur-lg" 
         style={{
-          backgroundImage: `url(https://image.tmdb.org/t/p/original${actualMovie.backdrop_path || ""})`,
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${actualMovie?.backdrop_path || ""})`,
         }}
       />
       <div className="absolute inset-0 bg-black/60" />
-      <div className="relative flex justify-center pt-5 w-full h-full">
-        <Image
-          src={`https://image.tmdb.org/t/p/w500${actualMovie.poster_path || ""}`}
-          alt="Image"
-          width={400}
-          height={100}
-          priority
-          className="border-2 border-white/50 rounded-lg shadow-xl hidden md:block"
-        />
-        <div className="ml-0 md:ml-8 text-white flex flex-col gap-4">
-          <h1 className="text-3xl font-bold hover:cursor-pointer hover:opacity-80">
-            <Link 
-              href={actualMovie.homepage || ""}
-              target="_blank"
-              >
-              {actualMovie.title}{" "}
-              {actualMovie.release_date
-                ? `(${new Date(actualMovie.release_date).getFullYear()})`
-                : ""}
-            </Link>
-          </h1>
-          <div className="flex flex-row mb-2 mt-2 items-center">
-            {actualMovie.genres?.map((genre) => (
-              <span
-                key={genre.id}
-                  className="px-3 py-1 mr-2 bg-white/20 rounded-full text-sm text-white font-medium hover:bg-white/30 cursor-pointer transition-colors"
-              >
-                {genre.name}
-              </span>
-            ))}
-            <p className="opacity-80">{`
-              ${Math.floor(Number(actualMovie.runtime) / 60)} hours 
-              ${Number(actualMovie.runtime) % 60} minutes`}</p>
-          </div>
-          <p className="text-base leading-relaxed opacity-90 w-150">{actualMovie.overview}</p>
-          <div className="flex flex-row">
-            <p className="mt-5 text-zinc-300 font-bold text-2xl p-8 rounded-full border-2 border-green-700 flex justify-center items-center w-15 h-15 bg-zinc-600 hover:bg-zinc-700">
-              {`${Math.round(Number(actualMovie.vote_average) * 10)}%`}
-            </p>
-            <p className="flex self-center mt-4 ml-2">User Ratings</p>
-          </div>
-        </div>
-      </div>
+      {filteredContent()}
     </div>
   );
 }

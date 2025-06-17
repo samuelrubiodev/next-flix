@@ -2,13 +2,17 @@
 "use client";
 
 import Link from "next/link"
-import { CircleUserRound, HomeIcon, Search } from 'lucide-react';
+import { CircleUserRound, HomeIcon } from 'lucide-react';
 import { useState } from "react";
 import PopupResults from "./PopupResults";
 import Image from "next/image";
+import SearchMovie from "./SearchMovie";
+import { useRouter } from "next/navigation";
 
 export default function Header() {
+  const router = useRouter();
   const [isPopupResultsActive, setPopupResultsActive] = useState(false);
+  const [search, setSearch] = useState("");
   const [isHover, setHover] = useState(false);
 
   return (
@@ -39,6 +43,16 @@ export default function Header() {
           >
             <p>TV Shows</p>
           </Link>
+        </div>
+
+        <div className="flex flex-row items-center">
+          <SearchMovie 
+            onSearchChange={setSearch}
+            onKeyPressEnter={(term) => {
+              if (term !== "") router.push(`home/results?search=${term}`)
+            }}
+            text={search}
+          />
         </div>
         
         {/* 

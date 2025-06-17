@@ -1,8 +1,15 @@
-import { MovieResult } from "moviedb-promise"
+import { MovieResponse, MovieResult, ShowResponse, TvResult } from "moviedb-promise"
 
 type GenericMovieActionRequest = {
-    movies: MovieResult[],
-    searchTerm: string
+  movie?: MovieResponse,
+  movies: MovieResult[],
+  searchTerm: string
 }
 
-export type { GenericMovieActionRequest }
+type GenericShowActionRequest = {
+  show?: ShowResponse,
+  shows: TvResult[],
+  searchTerm: string
+}
+
+export type { GenericMovieActionRequest, GenericShowActionRequest }

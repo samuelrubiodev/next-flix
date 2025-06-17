@@ -3,7 +3,7 @@ import { Github, CircleUserRound, HomeIcon } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <div className="absolute left-0 bottom-0 w-full h-30">
+    <div className="absolute left-0 bottom-0 w-full h-30 z-11">
       <hr className="text-zinc-700"/>
       <footer className="h-29 w-full bg-black">
         <div className="flex flex-row relative justify-center items-center">

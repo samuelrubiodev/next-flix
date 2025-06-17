@@ -1,10 +1,10 @@
 import { MovieResult } from "moviedb-promise";
 import { RequestParams } from "../IRequest";
-import ITestRequest from "../IActionRequest";
+import ActionRequest from "../IActionRequest";
 import { JSX } from "react";
 import { GenericMovieActionRequest } from "@/types/actions/types";
 
-export default class SearchMovieRequest implements ITestRequest<MovieResult[], GenericMovieActionRequest>  {
+export default class SearchMovieRequest implements ActionRequest<MovieResult[], GenericMovieActionRequest>  {
   private page: number;
   private results: MovieResult[] = [];
   private elementFactory: (props: GenericMovieActionRequest) => JSX.Element;

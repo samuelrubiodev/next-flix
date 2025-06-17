@@ -2,11 +2,11 @@ import { RequestParams } from "@/actions/requests/IRequest";
 import IActionRequest from "@/actions/requests/IActionRequest";
 import NotFound from "@/app/not-found";
 import { GenericMovieActionRequest } from "@/types/actions/types";
-import { MovieResult } from "moviedb-promise";
+import { MovieResponse } from "moviedb-promise";
 import { JSX } from "react";
 
-export default class ActionsSingleMovies {
-  public actions: IActionRequest<MovieResult[],GenericMovieActionRequest>[] = [];
+export default class ActionsSomeMovies {
+  public actions: IActionRequest<MovieResponse,GenericMovieActionRequest>[] = [];
 
   private setPage(page:number) {
     this.actions.forEach((action) => {
@@ -14,7 +14,7 @@ export default class ActionsSingleMovies {
     });
   }
 
-  public async addAction(action: IActionRequest<MovieResult[],GenericMovieActionRequest>, params: RequestParams): Promise<void> {
+  public async addAction(action: IActionRequest<MovieResponse,GenericMovieActionRequest>, params: RequestParams): Promise<void> {
     this.actions.splice(1,this.actions.length);
     this.actions.push(action);
 
