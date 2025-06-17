@@ -5,6 +5,7 @@ import Link from "next/link"
 import { CircleUserRound, HomeIcon, Search } from 'lucide-react';
 import { useState } from "react";
 import PopupResults from "./PopupResults";
+import Image from "next/image";
 
 export default function Header() {
   const [isPopupResultsActive, setPopupResultsActive] = useState(false);
@@ -16,7 +17,11 @@ export default function Header() {
           ? <PopupResults exit={() => setPopupResultsActive(false)} />
           : null}
       <header className="flex items-center justify-around bg-black w-full h-17">
-        <h1 className="m-5 text-3xl text-white">Next Flix</h1>
+        <div className="flex flex-row">
+          <Image src="/film.svg" height={40} width={40} alt="Icon app"/>
+          <h1 className="m-5 text-3xl text-white">Next Flix</h1>
+        </div>
+        
         <Link className="p-1 isolate rounded-sm text-xl text-zinc-300 transition-colors hover:text-white hover:bg-zinc-600 flex flex-row items-center" href={"/home"}>
           <HomeIcon size={20} className="mr-2"/>
           <p>Home</p>

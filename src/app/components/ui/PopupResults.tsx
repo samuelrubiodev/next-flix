@@ -4,18 +4,18 @@ import SearchMovie from "./SearchMovie"
 import { useEffect, useState } from "react"
 import { X } from 'lucide-react';
 import ActionsSomeMovies from "@/actions/movies/some/ActionsSomeMovies";
-import ITestRequest from "@/actions/requests/ITestRequest";
 import { MovieResult } from "moviedb-promise";
 import { GenericMovieActionRequest } from "@/types/actions/types";
 import SearchMovieRequest from "@/actions/requests/Movie/SearchMovieRequest";
 import MoviesResult from "./Actions/Movies/MoviesResult";
 import { OrbitProgress } from "react-loading-indicators";
+import IActionRequest from "@/actions/requests/IActionRequest";
 
 type PopupResults = {
   exit: () => void;
 }
 
-const actions: ITestRequest<MovieResult[],GenericMovieActionRequest>[] = [
+const actions: IActionRequest<MovieResult[],GenericMovieActionRequest>[] = [
   new SearchMovieRequest(1,MoviesResult)
 ];
 

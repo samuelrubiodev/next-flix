@@ -1,6 +1,6 @@
 import { MovieResult } from "moviedb-promise";
 import { RequestParams } from "../IRequest";
-import ITestRequest from "../ITestRequest";
+import ITestRequest from "../IActionRequest";
 import { JSX } from "react";
 import { GenericMovieActionRequest } from "@/types/actions/types";
 

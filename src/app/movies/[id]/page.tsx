@@ -96,9 +96,7 @@ export default function Page({
           backgroundImage: `url(https://image.tmdb.org/t/p/original${actualMovie.backdrop_path || ""})`,
         }}
       />
-
       <div className="absolute inset-0 bg-black/60" />
-
       <div className="relative flex justify-center pt-5 w-full h-full">
         <Image
           src={`https://image.tmdb.org/t/p/w500${actualMovie.poster_path || ""}`}
@@ -135,7 +133,7 @@ export default function Page({
           </div>
           <p className="text-base leading-relaxed opacity-90 w-150">{actualMovie.overview}</p>
           <div className="flex flex-row">
-            <p className="mt-5 text-zinc-300 font-bold text-2xl rounded-full border-2 border-green-700 flex justify-center items-center w-15 h-15 bg-zinc-600 hover:bg-zinc-700">
+            <p className="mt-5 text-zinc-300 font-bold text-2xl p-8 rounded-full border-2 border-green-700 flex justify-center items-center w-15 h-15 bg-zinc-600 hover:bg-zinc-700">
               {`${Math.round(Number(actualMovie.vote_average) * 10)}%`}
             </p>
             <p className="flex self-center mt-4 ml-2">User Ratings</p>
