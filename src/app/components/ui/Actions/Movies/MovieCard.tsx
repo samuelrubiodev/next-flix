@@ -1,33 +1,40 @@
-import Image from "next/image"
+import Image from "next/image";
 
 export type MovieCardProps = {
-  title: string,
-  posterImage: string,
-  overiew: string,
-  relaseDate: Date,
-  genres: string[],
-  voteAverage: number
-}
+  title: string;
+  posterImage: string;
+  overiew: string;
+  releaseDate: Date;
+  genres: string[];
+  voteAverage: number;
+};
 
 export default function MovieCard(props: MovieCardProps) {
   return (
-    <div className="w-3xs h-120 border-0">
-      <div className="flex justify-center">
+    <div className="flex w-full flex-col overflow-hidden rounded-lg bg-black shadow-lg">
+      <div className="aspect-[2/3] w-full relative">
         <Image
           src={props.posterImage}
-          alt="Image"
-          width={200}
-          height={100}
-          className="w-full h-100"
+          alt={`Póster de ${props.title}`}
+          fill
+          className="object-cover"
           priority
         />
       </div>
-      <div className="flex wrap-anywhere justify-around items-center bg-black">
-        <div className="text-4xl m-2 p-1 bg-emerald-500 border-s-3 rounded-br-2xl rounded-e-2xl">
-          <p className="text-white">{`${Math.round(props.voteAverage)}`}</p>
+      <div className="flex h-28 flex-col justify-between p-3">
+        <div>
+          <h1 className="truncate text-base font-bold text-white hover:underline md:text-lg" title={props.title}>
+            {props.title}
+          </h1>
+          <p className="text-sm text-gray-400">{props.releaseDate.getFullYear()}</p>
         </div>
-        <h1 className="m-2 hover:underline" >{props.title} {`(${props.relaseDate.getFullYear()})`}</h1>
+        
+        <div className="flex items-center gap-2">
+          <div className="rounded-md bg-emerald-500 p-1 px-2 text-white">
+            <p className="font-bold">{`${Math.round(props.voteAverage * 10)}%`}</p>
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }

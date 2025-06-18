@@ -21,7 +21,12 @@ export default class MovieAction implements IRequestAction<MovieResult[]> {
     }
 
     getElement(searchTerm: string): JSX.Element {
-        return this.elementFactory({movies: this.results, searchTerm: searchTerm});
+        const ElementComponent = this.elementFactory;
+
+        return <ElementComponent
+            movies={this.Results}
+            searchTerm={searchTerm}
+        />;
     }
 
     get Results(): MovieResult[] {

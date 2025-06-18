@@ -15,13 +15,13 @@ export default function TvShows(props: TvShowsProps) {
   );  
 
   return (
-    <>
+    <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
       {filteredMovies.length > 0 ? filteredMovies.map((tvShow) => (
         <Link
           href={{
             pathname: `/tvShows/${tvShow.id}`
           }}
-          className="mr-5 hover:transform-[scale(1.05)] transition-all duration-150 ease-in-out"
+          className="hover:transform-[scale(1.05)] transition-all duration-150 ease-in-out"
           key={tvShow.id}
         >
         <TvShowCard
@@ -33,7 +33,7 @@ export default function TvShows(props: TvShowsProps) {
           vote_average={tvShow.vote_average || 0}
         />
       </Link>
-      )) : <p className="text-black">No series found.</p>}
-    </>
+      )) : <p className="text-white">No series found.</p>}
+    </div>
   )
 }

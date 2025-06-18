@@ -63,7 +63,7 @@ export default function Page({
 
   return (
     <div
-      className="min-h-screen w-full relative z-9"
+      className="min-h-screen w-full relative"
       style={{
         minHeight: 'calc(100vh - 120px)'
       }}
@@ -74,7 +74,7 @@ export default function Page({
           backgroundImage: `url(https://image.tmdb.org/t/p/original${actualMovie?.backdrop_path || ""})`,
         }}
       />
-      <div className="absolute inset-0 bg-black/60" />
+      <div className="absolute inset-0 bg-black/60"  />
       {filteredContent()}
     </div>
   );

@@ -5,6 +5,7 @@ import { useState } from "react";
 
 export type SearchMovieProps = {
   text?: string,
+  label?: string,
   onKeyPressEnter?: (searchTerm: string) => void; 
   onSearchChange: (searchTerm: string) => void,
 };
@@ -29,15 +30,13 @@ export default function SearchMovie(props: SearchMovieProps) {
           id="input" 
           name="search" 
           className="bg-transparent text-zinc-300 w-full ml-2 focus:outline-none" 
-          placeholder="Enter movie or series"
+          placeholder={props.label || "Enter movie or series"}
           spellCheck={false}
           value={searchTerm}
           onChange={handleInputChange}
           onKeyDownCapture={(event) => {
             if (event.nativeEvent instanceof KeyboardEvent 
-                && event.nativeEvent.key === "Enter" && props.onKeyPressEnter) {
-              props.onKeyPressEnter(searchTerm);
-            }
+              && event.nativeEvent.key === "Enter" && props.onKeyPressEnter) props.onKeyPressEnter(searchTerm);
           }}
         />
     </div>

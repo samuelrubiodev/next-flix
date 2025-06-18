@@ -84,17 +84,22 @@ function HomeContent() {
         }}
       />
       <div className="flex flex-row items-center h-full w-full">
-        <h1 className="text-3xl mt-5 mb-5 ml-2">Popular</h1>
+        <h1 className="text-3xl mt-5 mb-5 ml-2 2xl:text-3xl lg:text-2xl md:text-xl sm:text-sm max-sm:text-xs">Popular</h1>
         {!isLoading 
           ? <Switch 
-              className="flex justify-center ml-2 w-60 h-10"
+              className="flex justify-center ml-2 w-60 h-10
+              2xl:w-60 2xl:h-10 
+              lg:w-40 lg:h-12
+              md:w-35 md:h-9
+              sm:w-30 sm:h-7
+              "
               onChange={(index) => {
                 router.push(`/home?entertainmentContent=${index}&search=${searchTerm}`);
               }}
               selectedIndex={actionSelected}
             >
-              <p key={"movies"}>Movies</p>
-              <p key={"tv_shows"}>TV Shows</p>
+              <p className="2xl:text-2xl lg:text-lg md:text-xl sm:text-xs max-sm:text-xs">Movies</p>
+              <p className="2xl:text-2xl lg:text-lg md:text-xl sm:text-xs max-sm:text-xs">TV Shows</p>
             </Switch> 
           : null}
       </div>
