@@ -14,6 +14,16 @@ import { OrbitProgress } from "react-loading-indicators";
 import TvShowsRequest from "@/actions/requests/Tv/TvShowsRequest";
 import MoviesRequest from "@/actions/requests/Movie/MoviesRequest";
 import Movies from "../components/ui/Actions/Movies/Movies";
+import Filter from "../components/ui/Filter/Filter";
+import FilterRadioElement from "../components/ui/Filter/RadioElement/FilterRadioElement";
+import FilterRadioGroupElement from "../components/ui/Filter/RadioElement/FilterRadioGroupElement";
+import FilterLabelElement from "../components/ui/Filter/FilterLabelElement";
+import FilterGroupElement from "../components/ui/Filter/FilterGroupElement";
+import FilterSelectGroupElement from "../components/ui/Filter/SelectElement/FilterSelectGroupElement";
+import FilterSelectElement from "../components/ui/Filter/SelectElement/FilterSelectElement";
+import { CALIFICATION, GENRES } from "../env/env";
+import FilterGroup from "../components/ui/Filter/FilterGroup";
+import FilterButtonElement from "../components/ui/Filter/FilterButtonElement";
 
 const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
   new MovieAction(1,new MoviesRequest(),Movies),
@@ -26,6 +36,13 @@ function HomeContent() {
   const router = useRouter();
   const [allActions, setActions] = useState<Actions>(new Actions());
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || "");
+  const [isLoading, setIsLoading] = useState(true);
+  const [isFilterActive, setFilterActive] = useState<boolean>(false);
+  const [page, setPage] = useState(() => {
+    const pageParam = searchParams.get("page");
+    return Number(pageParam) || 1;
+  });
+  
   const [actionSelected, setActionSelected] = useState<number>(() => {
     const initialEntertainmentContent = searchParams.get('entertainmentContent');
     const numericContent = Number(initialEntertainmentContent);
@@ -34,13 +51,11 @@ function HomeContent() {
     }
     return typeof MovieAction.NUMBER_OPTION === 'number' ? MovieAction.NUMBER_OPTION : 0;
   });
-  
-  const [isLoading, setIsLoading] = useState(true);
-  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const currentEntertainmentContent = searchParams.get('entertainmentContent');
     const currentSearch = searchParams.get('search');
+    const page = Number(searchParams.get('page')) || 1;
 
     const numericEntertainmentContent = Number(currentEntertainmentContent);
     if (currentEntertainmentContent !== null && !isNaN(numericEntertainmentContent)) {
@@ -50,6 +65,7 @@ function HomeContent() {
     }
 
     setSearchTerm(currentSearch || "");
+    setPage(page);
   }, [searchParams]);
 
   useEffect(() => {
@@ -77,24 +93,66 @@ function HomeContent() {
 
   return (
     <div>
-      <SearchMovie
-        text={searchTerm}
-        onSearchChange={(term: string) => {
-          router.push(`/home?entertainmentContent=${actionSelected}&search=${term}`);
-        }}
-      />
+      <div className="flex">
+        <SearchMovie
+          text={searchTerm}
+          onSearchChange={(term: string) => {
+            router.push(`/home?entertainmentContent=${actionSelected}&search=${term}`);
+          }}
+        />
+        <div className="flex flex-col items-center self-center">
+          <Filter onClick={(isActive: boolean) => setFilterActive(isActive)} />
+        </div>
+      </div>
+      <div className='relative flex flex-row items-center self-center'>
+        {isFilterActive 
+          ? <div className="bg-zinc-400/30 w-full ml-3 mr-24 mt-2 pb-2 pt-2 border-0 rounded-sm flex items-center justify-around">
+              <FilterGroupElement row>
+                <FilterRadioGroupElement>
+                  <FilterLabelElement>Adult content?</FilterLabelElement>
+                  <FilterRadioElement name="adult">Yes</FilterRadioElement>
+                  <FilterRadioElement name="adult">No</FilterRadioElement>
+                </FilterRadioGroupElement>
+                <FilterGroup>
+                  <FilterLabelElement>Genre</FilterLabelElement>
+                  <FilterSelectGroupElement name="genres">
+                    {GENRES.map((genre,id) => (
+                      <FilterSelectElement key={id}>{genre.name}</FilterSelectElement>
+                    ))}
+                  </FilterSelectGroupElement>
+                </FilterGroup>
+                <FilterGroup>
+                  <FilterLabelElement>Calification</FilterLabelElement>
+                  <FilterSelectGroupElement name="califications">
+                    {CALIFICATION.map((calification,id) => (
+                      <FilterSelectElement key={id}>{calification}</FilterSelectElement>
+                    ))}
+                  </FilterSelectGroupElement>
+                </FilterGroup>
+                <FilterGroup>
+                  <FilterLabelElement>Sort</FilterLabelElement>
+                  <FilterSelectGroupElement name="order">
+                    <FilterSelectElement>Select order</FilterSelectElement>
+                    <FilterSelectElement>Popularity</FilterSelectElement>
+                  </FilterSelectGroupElement>
+                </FilterGroup>
+                <FilterButtonElement>Submit</FilterButtonElement>
+              </FilterGroupElement>
+            </div>
+          : null
+        }
+      </div>
       <div className="flex flex-row items-center h-full w-full">
         <h1 className="text-3xl mt-5 mb-5 ml-2 2xl:text-3xl lg:text-2xl md:text-xl sm:text-sm max-sm:text-xs">Popular</h1>
         {!isLoading 
           ? <Switch 
               className="flex justify-center ml-2 w-60 h-10
-              2xl:w-60 2xl:h-10 
-              lg:w-40 lg:h-12
-              md:w-35 md:h-9
-              sm:w-30 sm:h-7
-              "
+                2xl:w-60 2xl:h-10 
+                lg:w-40 lg:h-12
+                md:w-35 md:h-9
+                sm:w-30 sm:h-7"
               onChange={(index) => {
-                router.push(`/home?entertainmentContent=${index}&search=${searchTerm}`);
+                router.push(`/home?entertainmentContent=${index}&search=${searchTerm}&page=${page}`);
               }}
               selectedIndex={actionSelected}
             >
@@ -110,8 +168,10 @@ function HomeContent() {
         {filteredContent()}
       </div>
       <Page 
-        onChange={setPage}
-        defaultPage={1}
+        onChange={(page) => {
+          router.push(`/home?entertainmentContent=${actionSelected}&search=${searchTerm}&page=${page}`);
+        }}
+        defaultPage={page}
         pages={[1,2,3,4]}
       />
     </div>

@@ -18,14 +18,14 @@ export default function Switch(props: SwitchProps) {
 
   return (
     <div className={props.className}>
-      <div className={`flex rounded-2xl border-2 border-gray-400 bg-gray-400 w-full h-full`}>
+      <div className={`flex rounded-2xl border-0 bg-zinc-600  w-full h-full`}>
         <div 
           className="flex items-center h-full w-full justify-around"
           >
           {props.children.map((children, i) => (
             <div 
-              className={`text-xl ml-2 rounded-sm pl-2 pr-2 border-0 hover:cursor-pointer hover:bg-slate-600 ${
-                selectedIndex === i ? 'bg-slate-500' : 'bg-transparent'
+              className={`text-xl ml-2 rounded-sm pl-2 pr-2 border-0 hover:cursor-pointer hover:bg-zinc-800 ${
+                selectedIndex === i ? 'bg-zinc-800/50' : 'bg-transparent'
               } transition-all duration-150 ease-in-out`}
               key={i}
               onClick={() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useState } from "react";
 
 export type SearchMovieProps = {
@@ -29,7 +29,7 @@ export default function SearchMovie(props: SearchMovieProps) {
           type="text" 
           id="input" 
           name="search" 
-          className="bg-transparent text-zinc-300 w-full ml-2 focus:outline-none" 
+          className="bg-transparent text-zinc-300 w-full ml-2 pr-2 focus:outline-none focus:ring-0 focus-within:border-none border-none" 
           placeholder={props.label || "Enter movie or series"}
           spellCheck={false}
           value={searchTerm}
@@ -39,6 +39,18 @@ export default function SearchMovie(props: SearchMovieProps) {
               && event.nativeEvent.key === "Enter" && props.onKeyPressEnter) props.onKeyPressEnter(searchTerm);
           }}
         />
+        {searchTerm !== "" 
+          ? <X 
+              size={30} 
+              color="white" 
+              onClick={() => {
+                setSearchTerm("");
+                props.onSearchChange("");
+              }}
+              className="hover:cursor-pointer"
+            />
+          : null
+        }
     </div>
   );
 }

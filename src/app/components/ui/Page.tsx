@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type PageProps = {
   pages: number[],
@@ -8,10 +8,6 @@ type PageProps = {
 
 export default function Page(props: PageProps) {
   const [actualPage, setActualPage] = useState(props.defaultPage);
-
-  useEffect(() => {
-    console.log(`Actual page: ${actualPage+1}`)
-  }, [actualPage]);
 
   return (
     <div className="flex justify-center m-5">
