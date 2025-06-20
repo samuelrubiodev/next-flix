@@ -49,7 +49,7 @@ export default function Page({
     }
 
     return action.getActionByActionSelected(
-      0,{movie: {}, movies: [], searchTerm: ""}
+      0,{movie: {}, movies: [], searchTerm: "",calification: "",selectedGenre: "", sort: ""}
     );
   };
 

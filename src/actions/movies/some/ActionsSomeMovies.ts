@@ -31,7 +31,10 @@ export default class ActionsSingleMovies {
     return action.getElement({ 
       movies: [], 
       searchTerm: props.searchTerm, 
-      movie: props.movie 
+      movie: props.movie,
+      calification: "",
+      selectedGenre: "",
+      sort: ""
     });
   }
 }

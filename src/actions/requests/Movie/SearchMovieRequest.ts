@@ -19,7 +19,13 @@ export default class SearchMovieRequest implements ActionRequest<MovieResult[], 
   }
 
   getElement(props: GenericMovieActionRequest): JSX.Element {
-    return this.elementFactory({ movies:  this.results, searchTerm: props.searchTerm });
+    return this.elementFactory({ 
+      movies:  this.results, 
+      searchTerm: props.searchTerm,
+      calification: "",
+      selectedGenre: "",
+      sort: ""
+    });
   }
 
   get Results(): MovieResult[] {

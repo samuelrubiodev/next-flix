@@ -4,15 +4,59 @@ import Link from "next/link";
 
 type MoviesProps = {
   movies: MovieResult[],
-  searchTerm: string
+  searchTerm: string,
+  selectedGenre: string, 
+  calification: string, 
+  sort: string
 };
 
 export default function Movies(props: MoviesProps) {
-  const filteredMovies = props.searchTerm.trim() === "" 
-    ? props.movies
-    : props.movies.filter(movie => 
-        movie.title?.toLowerCase().includes(props.searchTerm.toLowerCase())
-  );  
+  const filteredMovies = props.movies
+    .filter(movie => {
+      if (props.selectedGenre !== "1" && props.selectedGenre !== "") {
+        const genreId = parseInt(props.selectedGenre, 10);
+        if (!movie.genre_ids?.includes(genreId)) {
+          return false;
+        }
+      }
+
+      if (props.calification !== "Select calification" && props.calification !== "") {
+        const minRating = parseFloat(props.calification);
+        if ((movie.vote_average || 0) < minRating) {
+          return false;
+        }
+      }
+
+      if (props.searchTerm.trim() !== "" && !movie.title?.toLowerCase().includes(props.searchTerm.toLowerCase())) {
+        return false;
+      }
+
+      return true;
+    });  
+  
+    /*
+        .sort((a, b) => {
+      switch (props.sort) {
+        case "rating_desc":
+          return (b.vote_average || 0) - (a.vote_average || 0);
+        case "rating_asc":
+          return (a.vote_average || 0) - (b.vote_average || 0);
+        case "date_desc": {
+          const dateA = a.first_air_date ? new Date(a.first_air_date).getTime() : 0;
+          const dateB = b.first_air_date ? new Date(b.first_air_date).getTime() : 0;
+          return dateB - dateA;
+        }
+        case "date_asc": {
+          const dateA = a.first_air_date ? new Date(a.first_air_date).getTime() : 0;
+          const dateB = b.first_air_date ? new Date(b.first_air_date).getTime() : 0;
+          return dateA - dateB;
+        }
+        default:
+          return 0;
+      }
+    })
+
+    */
 
   return (
     <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">

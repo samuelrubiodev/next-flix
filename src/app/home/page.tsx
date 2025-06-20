@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState, Suspense } from "react"
@@ -38,6 +39,11 @@ function HomeContent() {
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || "");
   const [isLoading, setIsLoading] = useState(true);
   const [isFilterActive, setFilterActive] = useState<boolean>(false);
+  const [isAdultContent, setIsAdultContent] = useState<boolean>(false);
+  const [genre, setGenre] = useState<string>("");
+  const [calification, setCalification] = useState<string>("");
+  const [sort, setSort] = useState<string>("");
+
   const [page, setPage] = useState(() => {
     const pageParam = searchParams.get("page");
     return Number(pageParam) || 1;
@@ -56,6 +62,10 @@ function HomeContent() {
     const currentEntertainmentContent = searchParams.get('entertainmentContent');
     const currentSearch = searchParams.get('search');
     const page = Number(searchParams.get('page')) || 1;
+    const adult: boolean = searchParams.get('adult') === "true";
+    const genres: string = searchParams.get("genres") || "";
+    const calification = searchParams.get("calification") || "";
+    const order = searchParams.get("order") || "";
 
     const numericEntertainmentContent = Number(currentEntertainmentContent);
     if (currentEntertainmentContent !== null && !isNaN(numericEntertainmentContent)) {
@@ -65,6 +75,10 @@ function HomeContent() {
     }
 
     setSearchTerm(currentSearch || "");
+    setIsAdultContent(adult);
+    setGenre(genres);
+    setCalification(calification);
+    setSort(order);
     setPage(page);
   }, [searchParams]);
 
@@ -73,13 +87,13 @@ function HomeContent() {
       setIsLoading(true);
       const newActions = new Actions();
 
-      await Promise.all(actions.map(action => newActions.addAction(action,page)));
+      await Promise.all(actions.map(action => newActions.addAction(action,page,isAdultContent)));
 
       setActions(newActions);
       setIsLoading(false);
     };
     initializeActions();
-  },[page])
+  },[page,isAdultContent])
 
   const filteredContent = () => {
     if (isLoading) {
@@ -87,7 +101,7 @@ function HomeContent() {
     }
 
     return allActions.getActionByActionSelected(
-      actionSelected,searchTerm
+      actionSelected,searchTerm,genre,calification,sort
     );
   };
 
@@ -97,7 +111,7 @@ function HomeContent() {
         <SearchMovie
           text={searchTerm}
           onSearchChange={(term: string) => {
-            router.push(`/home?entertainmentContent=${actionSelected}&search=${term}`);
+            router.push(`/home?entertainmentContent=${actionSelected}&search=${term}&page=${page}&genres=${genre}&califications=${calification}&order=${sort}`);
           }}
         />
         <div className="flex flex-col items-center self-center">
@@ -108,16 +122,18 @@ function HomeContent() {
         {isFilterActive 
           ? <div className="bg-zinc-400/30 w-full ml-3 mr-24 mt-2 pb-2 pt-2 border-0 rounded-sm flex items-center justify-around">
               <FilterGroupElement row>
-                <FilterRadioGroupElement>
+                {/* 
+                  <FilterRadioGroupElement>
                   <FilterLabelElement>Adult content?</FilterLabelElement>
                   <FilterRadioElement name="adult">Yes</FilterRadioElement>
                   <FilterRadioElement name="adult">No</FilterRadioElement>
                 </FilterRadioGroupElement>
+                */}
                 <FilterGroup>
                   <FilterLabelElement>Genre</FilterLabelElement>
                   <FilterSelectGroupElement name="genres">
                     {GENRES.map((genre,id) => (
-                      <FilterSelectElement key={id}>{genre.name}</FilterSelectElement>
+                      <FilterSelectElement value={genre.id?.toString() || ""} key={id}>{genre.name}</FilterSelectElement>
                     ))}
                   </FilterSelectGroupElement>
                 </FilterGroup>
@@ -125,15 +141,15 @@ function HomeContent() {
                   <FilterLabelElement>Calification</FilterLabelElement>
                   <FilterSelectGroupElement name="califications">
                     {CALIFICATION.map((calification,id) => (
-                      <FilterSelectElement key={id}>{calification}</FilterSelectElement>
+                      <FilterSelectElement value={calification} key={id}>{calification}</FilterSelectElement>
                     ))}
                   </FilterSelectGroupElement>
                 </FilterGroup>
                 <FilterGroup>
                   <FilterLabelElement>Sort</FilterLabelElement>
                   <FilterSelectGroupElement name="order">
-                    <FilterSelectElement>Select order</FilterSelectElement>
-                    <FilterSelectElement>Popularity</FilterSelectElement>
+                    <FilterSelectElement value="Select order">Select order</FilterSelectElement>
+                    <FilterSelectElement value="Popularity">Popularity</FilterSelectElement>
                   </FilterSelectGroupElement>
                 </FilterGroup>
                 <FilterButtonElement>Submit</FilterButtonElement>
@@ -152,7 +168,7 @@ function HomeContent() {
                 md:w-35 md:h-9
                 sm:w-30 sm:h-7"
               onChange={(index) => {
-                router.push(`/home?entertainmentContent=${index}&search=${searchTerm}&page=${page}`);
+                router.push(`/home?entertainmentContent=${index}&search=${searchTerm}&page=${page}&genres=${genre}&califications=${calification}&order=${sort}`);
               }}
               selectedIndex={actionSelected}
             >
@@ -169,7 +185,7 @@ function HomeContent() {
       </div>
       <Page 
         onChange={(page) => {
-          router.push(`/home?entertainmentContent=${actionSelected}&search=${searchTerm}&page=${page}`);
+          router.push(`/home?entertainmentContent=${actionSelected}&search=${searchTerm}&page=${page}&genres=${genre}&califications=${calification}&order=${sort}`);
         }}
         defaultPage={page}
         pages={[1,2,3,4]}

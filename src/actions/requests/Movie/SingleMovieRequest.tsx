@@ -25,6 +25,9 @@ export default class SingleMovieRequest implements ActionRequest<MovieResponse, 
       movies={[]}
       movie={this.result}
       searchTerm={props.searchTerm}
+      calification=""
+      selectedGenre=""
+      sort=""
     />;
   }
 

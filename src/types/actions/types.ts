@@ -3,7 +3,10 @@ import { MovieResponse, MovieResult, ShowResponse, TvResult } from "moviedb-prom
 type GenericMovieActionRequest = {
   movie?: MovieResponse,
   movies: MovieResult[],
-  searchTerm: string
+  searchTerm: string,
+  selectedGenre: string, 
+  calification: string, 
+  sort: string
 }
 
 type GenericShowActionRequest = {

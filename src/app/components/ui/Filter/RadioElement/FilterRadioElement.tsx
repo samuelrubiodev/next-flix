@@ -17,6 +17,7 @@ export default function FilterRadioElement(props: FilterRadioElementProps) {
       <input 
         type="radio" 
         id={uniqueId} 
+        value={props.children?.toString()}
         name={props.name || "radio"} 
         className="hidden peer" 
       />

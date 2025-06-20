@@ -1,25 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import Link from "next/link"
 import { CircleUserRound, HomeIcon } from 'lucide-react';
 import { useState } from "react";
-import PopupResults from "./PopupResults";
 import Image from "next/image";
 import SearchMovie from "./SearchMovie";
 import { useRouter } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
-  const [isPopupResultsActive, setPopupResultsActive] = useState(false);
   const [search, setSearch] = useState("");
-  const [isHover, setHover] = useState(false);
 
   return (
     <div>
-      {isPopupResultsActive 
-          ? <PopupResults exit={() => setPopupResultsActive(false)} />
-          : null}
       <header className="flex items-center justify-around bg-black w-full h-17">
         <div className="flex flex-row">
           <Image src="/film.svg" height={40} width={40} alt="Icon app"/>
@@ -61,27 +54,6 @@ export default function Header() {
             text={search}
           />
         </div>
-        
-        {/* 
-          <div className="flex flex-row items-center">
-          <div 
-            className="hover:cursor-pointer hover:text-amber-200 flex-row flex items-center" 
-            onPointerEnter={() => setHover(true)}
-            onPointerLeave={() => setHover(false)}
-            onClick={() => setPopupResultsActive(true)}
-          >
-            <p className="mr-2">Search</p>
-            <Search 
-              size={30} 
-              color={isHover 
-                ? "#fee685"
-                : "white"}
-              className="hover:cursor-pointer"
-            />
-          </div>
-        </div>
-        */}
-       
         <Link 
           className="m-5 text-xl flex flex-row items-center bg-white p-1.5 text-zinc-800 rounded-sm border-0 hover:bg-gray-200
           2xl:h-10 md:h-9 sm:h-8" 

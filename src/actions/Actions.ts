@@ -11,21 +11,21 @@ export default class Actions<T = unknown> {
     });
   }
     
-  public async addAction(action: IRequestAction<T>, page: number): Promise<void> {
+  public async addAction(action: IRequestAction<T>, page: number, isAdultContent: boolean): Promise<void> {
     this.actions.splice(1,this.actions.length);
     this.actions.push(action);
     this.setPage(page);
 
-    await action.sendRequestAction().then((result) => {
+    await action.sendRequestAction(isAdultContent).then((result) => {
       console.log("Action result:", result);
     });
   }
 
-  public getActionByActionSelected(actionSelected: number, searchTerm: string): JSX.Element {
+  public getActionByActionSelected(actionSelected: number, searchTerm: string, selectedGenre: string, calification: string, sort: string): JSX.Element {
     const action = this.actions.find((action, id) => id === actionSelected);
     if (!action) {
       return NotFound();
     }
-    return action.getElement(searchTerm);
+    return action.getElement(searchTerm,selectedGenre,calification,sort);
   }
 }

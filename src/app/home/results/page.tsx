@@ -49,7 +49,7 @@ function ResultsContent() {
     }
 
     return action.getActionByActionSelected(
-      0,{searchTerm: searchTerm || "", movies: []}
+      0,{ searchTerm: searchTerm || "", movies: [],calification: "",selectedGenre: "", sort: ""}
     );
   };
 

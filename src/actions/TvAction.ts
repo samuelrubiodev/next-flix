@@ -17,16 +17,21 @@ export default class TvAction implements IRequestAction<TvResult[]> {
 
     setPage(page:number) { this.page = page; }
 
-    getElement(searchTerm: string): JSX.Element {
-        return TvShows({searchTerm: searchTerm,tvShows: this.Results});
+    getElement(searchTerm: string, selectedGenre: string, calification: string, sort: string): JSX.Element {
+        return TvShows({ 
+            searchTerm: searchTerm,
+            tvShows: this.Results, 
+            genre: selectedGenre, 
+            calification,sort 
+        });
     }
 
     get Results(): TvResult[] {
         return this.results;
     }
 
-    public async sendRequestAction(): Promise<TvResult[]> {
-        this.results = await this.request.sendRequest({page: this.page});
+    public async sendRequestAction(isAdultContent: boolean): Promise<TvResult[]> {
+        this.results = await this.request.sendRequest({page: this.page, isAdultContent});
         return this.results;
     }
 }
