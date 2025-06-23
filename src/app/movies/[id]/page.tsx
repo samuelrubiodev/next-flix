@@ -3,14 +3,13 @@
 import { MovieResponse } from "moviedb-promise";
 import React, { useEffect, useState } from "react";
 import { OrbitProgress } from "react-loading-indicators";
-import IActionRequest from "@/actions/requests/IActionRequest";
-import { GenericMovieActionRequest } from "@/types/actions/types";
-import SingleMovieRequest from "@/actions/requests/Movie/SingleMovieRequest";
+import IAction from "@/actions/IAction";
+import SingleMovieAction from "@/actions/movies/SingleMovieAction";
 import MovieResult from "@/app/components/ui/Actions/Movies/MovieResults";
-import ActionsSingleMovies from "@/actions/movies/single/ActionsSingleMovies";
+import ActionsManager from "@/actions/ActionsManager";
 
-const actions: IActionRequest<MovieResponse,GenericMovieActionRequest>[] = [
-  new SingleMovieRequest(1,MovieResult)
+const actions: IAction<MovieResponse>[] = [
+  new SingleMovieAction(MovieResult)
 ];
 
 export default function Page({
@@ -19,7 +18,7 @@ export default function Page({
   params: Promise<{ id: string }>
 }) {
   const { id } = React.use(params);
-  const [action, setActions] = useState<ActionsSingleMovies>(new ActionsSingleMovies());
+  const [action, setActions] = useState<ActionsManager>(new ActionsManager);
   const [actualMovie, setActualMovie] = useState<MovieResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -32,15 +31,16 @@ export default function Page({
 
     const initializeActions = async () => {
       setLoading(true);
-      const newActions = new ActionsSingleMovies();
+      const newActions = new ActionsManager();
 
-      await Promise.all(actions.map(actionObject => newActions.addAction(actionObject,{ id: Number(id) || 0 })));
+      await Promise.all(actions.map(actionObject => newActions.addAction(actionObject, { id: Number(id)})));
       setActions(newActions);
 
-      setActualMovie(actions[0].Results)
+      setActualMovie(newActions.getAction(0)?.getResults?.() ?? null);
       setLoading(false);
     };
     initializeActions();
+    
   }, [id]); 
 
   const filteredContent = () => {
@@ -48,9 +48,7 @@ export default function Page({
       return <OrbitProgress color="blue" size="large" easing="ease-in-out" />
     }
 
-    return action.getActionByActionSelected(
-      0,{movie: {}, movies: [], searchTerm: "",calification: "",selectedGenre: "", sort: ""}
-    );
+    return action.getActionElement(0,{ searchTerm: ""})
   };
 
   if (loading) {

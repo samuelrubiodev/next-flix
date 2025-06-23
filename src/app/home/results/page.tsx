@@ -6,34 +6,33 @@ import { Suspense, useEffect, useState } from "react";
 import Movies from "@/app/components/ui/Actions/Movies/Movies";
 import { OrbitProgress } from "react-loading-indicators";
 import SearchMovie from "@/app/components/ui/SearchMovie";
-import IActionRequest from "@/actions/requests/IActionRequest";
-import { GenericMovieActionRequest } from "@/types/actions/types";
-import SearchMovieRequest from "@/actions/requests/Movie/SearchMovieRequest";
-import ActionsSomeMovies from "@/actions/movies/some/ActionsSomeMovies";
 import { useRouter } from "next/navigation";
+import IAction from "@/actions/IAction";
+import SearchMovieAction from "@/actions/movies/SearchMovieAction";
+import ActionsManager from "@/actions/ActionsManager";
 
-const actions: IActionRequest<MovieResult[],GenericMovieActionRequest>[] = [
-  new SearchMovieRequest(1,Movies)
-];
+const actions: IAction<MovieResult[]>[] = [
+  new SearchMovieAction(Movies)
+]
 
 function ResultsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [action, setActions] = useState<ActionsSomeMovies>(new ActionsSomeMovies());
+  const [action, setActions] = useState<ActionsManager>(new ActionsManager());
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || "");
 
   useEffect(() => {
     const initializeActions = async () => {
       setIsLoading(true);
-      const newActions = new ActionsSomeMovies();
+      const newActions = new ActionsManager();
 
-      await Promise.all(actions.map(actionObject => newActions.addAction(actionObject,{ page: 1, query: searchTerm || ""})));
+      await Promise.all(actions.map(action => newActions.addAction(action,{ isAdultContent: true, page: 1, query: searchTerm })));
 
       setActions(newActions);
-      setIsLoading(false);
     };
     initializeActions();
+    setIsLoading(false);
 
   },[searchTerm]);
   
@@ -41,15 +40,15 @@ function ResultsContent() {
     const currentSearch = searchParams.get('search');
 
     setSearchTerm(currentSearch || "");
-    }, [searchParams]);
+  }, [searchParams]);
 
   const filteredContent = () => {
     if (isLoading) {
       return <OrbitProgress color="blue" size="large" easing="ease-in-out" />
     }
 
-    return action.getActionByActionSelected(
-      0,{ searchTerm: searchTerm || "", movies: [],calification: "",selectedGenre: "", sort: ""}
+    return action.getActionElement(
+      0,{ searchTerm, selectedGenre: "", calification: "", sort: "" }
     );
   };
 

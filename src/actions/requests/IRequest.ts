@@ -4,7 +4,3 @@ export type RequestParams = {
   page?: number
   isAdultContent?: boolean
 }
-
-export default interface IRequest<D> {
-  sendRequest: (params: RequestParams) => Promise<D>;
-}

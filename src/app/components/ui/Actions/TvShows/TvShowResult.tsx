@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { GenericShowActionRequest } from "@/types/actions/types";
+import { GenericActionsProps } from "@/types/actions/types";
 import { ShowResponse } from "moviedb-promise";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function TvShowResult(props: GenericShowActionRequest) {
-  const [actualMovie, setActualMovie] = useState<ShowResponse>(props.show || {});
+export default function TvShowResult(props: GenericActionsProps) {
+  const [actualMovie, setActualMovie] = useState<ShowResponse>(props.tvShow || {});
 
   return (
     <div className="relative flex justify-center pt-5 w-full h-full">

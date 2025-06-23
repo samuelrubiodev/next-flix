@@ -1,16 +1,16 @@
 "use client";
+
 import { ShowResponse } from "moviedb-promise";
 import React, { useEffect, useState } from "react";
 import { OrbitProgress } from "react-loading-indicators";
-import IActionRequest from "@/actions/requests/IActionRequest";
-import { GenericShowActionRequest } from "@/types/actions/types";
-import SingleTvRequest from "@/actions/requests/Tv/SingleTvRequest";
 import TvShowResult from "@/app/components/ui/Actions/TvShows/TvShowResult";
-import ActionsSingleTvShows from "@/actions/tvShows/single/ActionsSingleTvShows";
+import IAction from "@/actions/IAction";
+import SingleTvShowAction from "@/actions/tvShows/SingleTvShowAction";
+import ActionsManager from "@/actions/ActionsManager";
 
-const actions: IActionRequest<ShowResponse,GenericShowActionRequest>[]= [
-  new SingleTvRequest(1,TvShowResult)
-];
+const actions: IAction<ShowResponse>[] = [
+  new SingleTvShowAction(TvShowResult)
+]
 
 export default function Page({
   params,
@@ -18,7 +18,7 @@ export default function Page({
   params: Promise<{ id: string }>
 }) {
   const { id } = React.use(params);
-  const [action, setActions] = useState<ActionsSingleTvShows>(new ActionsSingleTvShows());
+  const [action, setActions] = useState<ActionsManager>(new ActionsManager());
   const [actualMovie, setActualMovie] = useState<ShowResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,11 +31,11 @@ export default function Page({
 
     const initializeActions = async () => {
       setLoading(true);
-      const newActions = new ActionsSingleTvShows();
+      const newActions = new ActionsManager();
 
       await Promise.all(actions.map(actionObject => newActions.addAction(actionObject,{ id: Number(id) || 0 })));
       setActions(newActions);
-      setActualMovie(actions[0].Results);
+      setActualMovie(newActions.getAction(0)?.getResults?.() ?? null);
       setLoading(false);
     };
     initializeActions();
@@ -46,8 +46,8 @@ export default function Page({
       return <OrbitProgress color="blue" size="large" easing="ease-in-out" />
     }
 
-    return action.getActionByActionSelected(
-      0,{shows: [], show: {}, searchTerm: ""}
+    return action.getActionElement(
+      0,{}
     );
   };
 

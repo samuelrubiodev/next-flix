@@ -1,33 +1,28 @@
-import { TvResult } from "moviedb-promise";
 import Link from "next/link";
 import TvShowCard from "./TvShowCard";
+import { GenericActionsProps } from "@/types/actions/types";
 
-type TvShowsProps = {
-  tvShows: TvResult[]
-  searchTerm: string,
-  genre: string,
-  calification: string,
-  sort: string
-};
-
-export default function TvShows(props: TvShowsProps) {
-  const filteredMovies = props.tvShows
+export default function TvShows(props: GenericActionsProps) {
+  const filteredMovies = (props.tvShows ?? [])
     .filter(tvShow => {
-      if (props.genre !== "1" && props.genre !== "") {
-        const genreId = parseInt(props.genre, 10);
+      if (props.selectedGenre !== "1" && props.selectedGenre !== "") {
+        const genreId = parseInt(props.selectedGenre || "", 10);
         if (!tvShow.genre_ids?.includes(genreId)) {
           return false;
         }
       }
 
+      /*
       if (props.calification !== "Select calification" && props.calification !== "") {
-        const minRating = parseFloat(props.calification);
+        const minRating = parseFloat(props.calification || "");
         if ((tvShow.vote_average || 0) < minRating) {
           return false;
         }
       }
+      */
 
-      if (props.searchTerm.trim() !== "" && !tvShow.name?.toLowerCase().includes(props.searchTerm.toLowerCase())) {
+      const searchTerm = props.searchTerm ?? "";
+      if (searchTerm.trim() !== "" && !tvShow.name?.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false;
       }
 

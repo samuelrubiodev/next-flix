@@ -1,33 +1,29 @@
-import { MovieResult } from "moviedb-promise";
 import MovieCard from "./MovieCard";
 import Link from "next/link";
+import { GenericActionsProps } from "@/types/actions/types";
 
-type MoviesProps = {
-  movies: MovieResult[],
-  searchTerm: string,
-  selectedGenre: string, 
-  calification: string, 
-  sort: string
-};
-
-export default function Movies(props: MoviesProps) {
-  const filteredMovies = props.movies
+export default function Movies(props: GenericActionsProps) {
+  const filteredMovies = (props.movies ?? [])
     .filter(movie => {
-      if (props.selectedGenre !== "1" && props.selectedGenre !== "") {
-        const genreId = parseInt(props.selectedGenre, 10);
+      if (props.selectedGenre !== "") {
+        const genreId = parseInt(props.selectedGenre || "", 10);
         if (!movie.genre_ids?.includes(genreId)) {
           return false;
         }
       }
 
-      if (props.calification !== "Select calification" && props.calification !== "") {
-        const minRating = parseFloat(props.calification);
-        if ((movie.vote_average || 0) < minRating) {
-          return false;
+      /*
+        if (props.calification !== "Select calification" && props.calification !== "") {
+          const minRating = parseFloat(props.calification || "");
+          if ((movie.vote_average || 0) < minRating) {
+            return false;
+          }
         }
-      }
+      */
 
-      if (props.searchTerm.trim() !== "" && !movie.title?.toLowerCase().includes(props.searchTerm.toLowerCase())) {
+
+      const searchTerm = props.searchTerm ?? "";
+      if (searchTerm.trim() !== "" && !movie.title?.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false;
       }
 

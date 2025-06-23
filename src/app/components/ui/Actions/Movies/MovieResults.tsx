@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { GenericMovieActionRequest } from "@/types/actions/types";
+import { GenericActionsProps } from "@/types/actions/types";
 import { MovieResponse } from "moviedb-promise";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function MovieResult(props: GenericMovieActionRequest) {
+export default function MovieResult(props: GenericActionsProps) {
   const [actualMovie, setActualMovie] = useState<MovieResponse>(props.movie || {});
   
   return (

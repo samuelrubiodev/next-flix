@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useEffect, useState, Suspense } from "react"
@@ -7,17 +6,9 @@ import SearchMovie from "../components/ui/SearchMovie";
 import Page from "../components/ui/Page";
 import { useSearchParams, useRouter } from 'next/navigation';
 import Switch from "../components/ui/Switch";
-import MovieAction from "@/actions/MovieAction";
-import IRequestAction from "@/actions/IRequestAction";
-import TvAction from "@/actions/TvAction";
-import Actions from "@/actions/Actions";
 import { OrbitProgress } from "react-loading-indicators";
-import TvShowsRequest from "@/actions/requests/Tv/TvShowsRequest";
-import MoviesRequest from "@/actions/requests/Movie/MoviesRequest";
 import Movies from "../components/ui/Actions/Movies/Movies";
 import Filter from "../components/ui/Filter/Filter";
-import FilterRadioElement from "../components/ui/Filter/RadioElement/FilterRadioElement";
-import FilterRadioGroupElement from "../components/ui/Filter/RadioElement/FilterRadioGroupElement";
 import FilterLabelElement from "../components/ui/Filter/FilterLabelElement";
 import FilterGroupElement from "../components/ui/Filter/FilterGroupElement";
 import FilterSelectGroupElement from "../components/ui/Filter/SelectElement/FilterSelectGroupElement";
@@ -25,17 +16,22 @@ import FilterSelectElement from "../components/ui/Filter/SelectElement/FilterSel
 import { CALIFICATION, GENRES } from "../env/env";
 import FilterGroup from "../components/ui/Filter/FilterGroup";
 import FilterButtonElement from "../components/ui/Filter/FilterButtonElement";
+import IAction from "@/actions/IAction";
+import MoviesAction from "@/actions/movies/MoviesAction";
+import TvShowsAction from "@/actions/tvShows/TvShowsAction";
+import TvShows from "../components/ui/Actions/TvShows/TvShows";
+import ActionsManager from "@/actions/ActionsManager";
 
-const actions: IRequestAction<MovieResult[] | TvResult[]>[] = [
-  new MovieAction(1,new MoviesRequest(),Movies),
-  new TvAction(1,new TvShowsRequest())
-];
+const actions: IAction<MovieResult[] | TvResult[]>[] = [
+  new MoviesAction(Movies),
+  new TvShowsAction(TvShows)
+]
 
 function HomeContent() {
   const searchParams = useSearchParams();
 
   const router = useRouter();
-  const [allActions, setActions] = useState<Actions>(new Actions());
+  const [allActions, setActions] = useState<ActionsManager>(new ActionsManager());
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || "");
   const [isLoading, setIsLoading] = useState(true);
   const [isFilterActive, setFilterActive] = useState<boolean>(false);
@@ -55,7 +51,7 @@ function HomeContent() {
     if (initialEntertainmentContent !== null && !isNaN(numericContent)) {
       return numericContent;
     }
-    return typeof MovieAction.NUMBER_OPTION === 'number' ? MovieAction.NUMBER_OPTION : 0;
+    return typeof 0 === 'number' ? 0 : 0;
   });
 
   useEffect(() => {
@@ -71,7 +67,7 @@ function HomeContent() {
     if (currentEntertainmentContent !== null && !isNaN(numericEntertainmentContent)) {
       setActionSelected(numericEntertainmentContent);
     } else {
-      setActionSelected(typeof MovieAction.NUMBER_OPTION === 'number' ? MovieAction.NUMBER_OPTION : 0);
+      setActionSelected(typeof 0 === 'number' ? 0 : 0);
     }
 
     setSearchTerm(currentSearch || "");
@@ -85,23 +81,23 @@ function HomeContent() {
   useEffect(() => {
     const initializeActions = async () => {
       setIsLoading(true);
-      const newActions = new Actions();
+      const newActions = new ActionsManager();
 
-      await Promise.all(actions.map(action => newActions.addAction(action,page,isAdultContent)));
+      await Promise.all(actions.map(action => newActions.addAction(action,{ isAdultContent: true, page, query: searchTerm })));
 
       setActions(newActions);
       setIsLoading(false);
     };
     initializeActions();
-  },[page,isAdultContent])
+  },[page,isAdultContent, searchTerm])
 
   const filteredContent = () => {
     if (isLoading) {
       return <OrbitProgress color="blue" size="large" easing="ease-in-out" />
     }
 
-    return allActions.getActionByActionSelected(
-      actionSelected,searchTerm,genre,calification,sort
+    return allActions.getActionElement(
+      actionSelected,{ searchTerm, selectedGenre: genre, calification, sort}
     );
   };
 
