@@ -62,7 +62,7 @@ function HomeContent() {
     const page = Number(searchParams.get('page')) || 1;
     const adult: boolean = searchParams.get('adult') === "true";
     const genres: string = searchParams.get("genres") || "";
-    const calification = searchParams.get("calification") || "";
+    const calification = searchParams.get("certification") || "";
     const order = searchParams.get("order") || "";
 
     const numericEntertainmentContent = Number(currentEntertainmentContent);
@@ -109,7 +109,7 @@ function HomeContent() {
         <SearchMovie
           text={searchTerm}
           onSearchChange={(term: string) => {
-            router.push(`/home?entertainmentContent=${actionSelected}&search=${term}&page=${page}&genres=${genre}&califications=${calification}&order=${sort}`);
+            router.push(`/home?entertainmentContent=${actionSelected}&search=${term}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
           }}
         />
         <div className="flex flex-col items-center self-center">
@@ -140,8 +140,8 @@ function HomeContent() {
                   </FilterSelectGroupElement>
                 </FilterGroup>
                 <FilterGroup>
-                  <FilterLabelElement>Calification</FilterLabelElement>
-                  <FilterSelectGroupElement name="califications">
+                  <FilterLabelElement>Certification</FilterLabelElement>
+                  <FilterSelectGroupElement name="certification">
                     {CALIFICATION.map((calification,id) => (
                       <FilterSelectElement value={calification} key={id}>{calification}</FilterSelectElement>
                     ))}
@@ -170,7 +170,7 @@ function HomeContent() {
                 md:w-35 md:h-9
                 sm:w-30 sm:h-7"
               onChange={(index) => {
-                router.push(`/home?entertainmentContent=${index}&search=${searchTerm}&page=${page}&genres=${genre}&califications=${calification}&order=${sort}`);
+                router.push(`/home?entertainmentContent=${index}&search=${searchTerm}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
               }}
               selectedIndex={actionSelected}
             >
@@ -187,7 +187,7 @@ function HomeContent() {
       </div>
       <Page 
         onChange={(page) => {
-          router.push(`/home?entertainmentContent=${actionSelected}&search=${searchTerm}&page=${page}&genres=${genre}&califications=${calification}&order=${sort}`);
+          router.push(`/home?entertainmentContent=${actionSelected}&search=${searchTerm}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
         }}
         defaultPage={page}
         pages={[1,2,3,4]}

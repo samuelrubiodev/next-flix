@@ -1,7 +1,7 @@
 import { Genre } from "moviedb-promise";
 
 const CALIFICATION: string[] = [
-  "Select calification",
+  "Select certification",
   "APTA",
   "7",
   "12",

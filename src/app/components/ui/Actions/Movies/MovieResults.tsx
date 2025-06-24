@@ -49,7 +49,7 @@ export default function MovieResult(props: GenericActionsProps) {
             <span
               key={genre.id}
               className="px-3 py-1 mr-2 bg-white/20 rounded-full text-sm text-white font-medium hover:bg-white/30 cursor-pointer transition-colors max-2xl:text-sm"
-              onClick={() => router.push(`/home/?entertainmentContent=0&genres=${genre.id}&califications=Select+calification&order=Select+order&adult=No`)}
+              onClick={() => router.push(`/home/?entertainmentContent=0&genres=${genre.id}&certification=Select+certification&order=Select+order&adult=No`)}
             >
               {genre.name}
             </span>
