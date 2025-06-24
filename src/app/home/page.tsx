@@ -21,6 +21,8 @@ import MoviesAction from "@/actions/movies/MoviesAction";
 import TvShowsAction from "@/actions/tvShows/TvShowsAction";
 import TvShows from "../components/ui/Actions/TvShows/TvShows";
 import ActionsManager from "@/actions/ActionsManager";
+import FilterRadioGroupElement from "../components/ui/Filter/RadioElement/FilterRadioGroupElement";
+import FilterRadioElement from "../components/ui/Filter/RadioElement/FilterRadioElement";
 
 const actions: IAction<MovieResult[] | TvResult[]>[] = [
   new MoviesAction(Movies),
@@ -83,7 +85,7 @@ function HomeContent() {
       setIsLoading(true);
       const newActions = new ActionsManager();
 
-      await Promise.all(actions.map(action => newActions.addAction(action,{ isAdultContent: true, page, query: searchTerm })));
+      await Promise.all(actions.map(action => newActions.addAction(action,{ isAdultContent: isAdultContent, page, query: searchTerm })));
 
       setActions(newActions);
       setIsLoading(false);
@@ -116,15 +118,19 @@ function HomeContent() {
       </div>
       <div className='relative flex flex-row items-center self-center'>
         {isFilterActive 
-          ? <div className="bg-zinc-400/30 w-full ml-3 mr-24 mt-2 pb-2 pt-2 border-0 rounded-sm flex items-center justify-around">
+          ? <div className="bg-zinc-400/30 w-full ml-3 mt-2 pb-2 pt-2 border-0 rounded-sm flex items-center justify-around
+            2xl:mr-24
+            xl:mr-24
+            lg:mr-20
+            md:mr-15
+            sm:mr-10
+          ">
               <FilterGroupElement row>
-                {/* 
-                  <FilterRadioGroupElement>
-                  <FilterLabelElement>Adult content?</FilterLabelElement>
+                <FilterRadioGroupElement>
+                  <FilterLabelElement>Adult</FilterLabelElement>
                   <FilterRadioElement name="adult">Yes</FilterRadioElement>
                   <FilterRadioElement name="adult">No</FilterRadioElement>
                 </FilterRadioGroupElement>
-                */}
                 <FilterGroup>
                   <FilterLabelElement>Genre</FilterLabelElement>
                   <FilterSelectGroupElement name="genres">

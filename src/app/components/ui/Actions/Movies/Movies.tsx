@@ -5,7 +5,7 @@ import { GenericActionsProps } from "@/types/actions/types";
 export default function Movies(props: GenericActionsProps) {
   const filteredMovies = (props.movies ?? [])
     .filter(movie => {
-      if (props.selectedGenre !== "") {
+      if (props.selectedGenre != "1" && props.selectedGenre !== "") {
         const genreId = parseInt(props.selectedGenre || "", 10);
         if (!movie.genre_ids?.includes(genreId)) {
           return false;
@@ -20,7 +20,6 @@ export default function Movies(props: GenericActionsProps) {
           }
         }
       */
-
 
       const searchTerm = props.searchTerm ?? "";
       if (searchTerm.trim() !== "" && !movie.title?.toLowerCase().includes(searchTerm.toLowerCase())) {
