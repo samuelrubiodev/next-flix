@@ -1,13 +1,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
+
 import { GenericActionsProps } from "@/types/actions/types";
 import { MovieResponse } from "moviedb-promise";
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function MovieResult(props: GenericActionsProps) {
   const [actualMovie, setActualMovie] = useState<MovieResponse>(props.movie || {});
-  
+  const router = useRouter();
+
   return (
     <div className="relative flex justify-center pt-5 w-full h-full">
       <Image
@@ -34,7 +38,8 @@ export default function MovieResult(props: GenericActionsProps) {
           {actualMovie.genres?.map((genre) => (
             <span
               key={genre.id}
-                className="px-3 py-1 mr-2 bg-white/20 rounded-full text-sm text-white font-medium hover:bg-white/30 cursor-pointer transition-colors"
+              className="px-3 py-1 mr-2 bg-white/20 rounded-full text-sm text-white font-medium hover:bg-white/30 cursor-pointer transition-colors"
+              onClick={() => router.push(`/home/?genres=${genre.id}&califications=Select+calification&order=Select+order`)}
             >
               {genre.name}
             </span>
