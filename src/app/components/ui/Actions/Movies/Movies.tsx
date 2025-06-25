@@ -1,6 +1,7 @@
 import MovieCard from "./MovieCard";
 import Link from "next/link";
 import { GenericActionsProps } from "@/types/actions/types";
+import { Film } from "lucide-react";
 
 export default function Movies(props: GenericActionsProps) {
   const filteredMovies = (props.movies ?? [])
@@ -12,15 +13,6 @@ export default function Movies(props: GenericActionsProps) {
         }
       }
 
-      /*
-        if (props.calification !== "Select calification" && props.calification !== "") {
-          const minRating = parseFloat(props.calification || "");
-          if ((movie.vote_average || 0) < minRating) {
-            return false;
-          }
-        }
-      */
-
       const searchTerm = props.searchTerm ?? "";
       if (searchTerm.trim() !== "" && !movie.title?.toLowerCase().includes(searchTerm.toLowerCase())) {
         return false;
@@ -28,55 +20,39 @@ export default function Movies(props: GenericActionsProps) {
 
       return true;
     });  
-  
-    /*
-        .sort((a, b) => {
-      switch (props.sort) {
-        case "rating_desc":
-          return (b.vote_average || 0) - (a.vote_average || 0);
-        case "rating_asc":
-          return (a.vote_average || 0) - (b.vote_average || 0);
-        case "date_desc": {
-          const dateA = a.first_air_date ? new Date(a.first_air_date).getTime() : 0;
-          const dateB = b.first_air_date ? new Date(b.first_air_date).getTime() : 0;
-          return dateB - dateA;
-        }
-        case "date_asc": {
-          const dateA = a.first_air_date ? new Date(a.first_air_date).getTime() : 0;
-          const dateB = b.first_air_date ? new Date(b.first_air_date).getTime() : 0;
-          return dateA - dateB;
-        }
-        default:
-          return 0;
-      }
-    })
 
-    */
+  if (filteredMovies.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 space-y-4">
+        <div className="p-6 bg-white/5 rounded-full">
+          <Film size={48} className="text-gray-400" />
+        </div>
+        <h3 className="text-xl font-semibold text-white">No movies found</h3>
+        <p className="text-gray-400 text-center max-w-md">
+          Try adjusting your search criteria or browse our popular movies instead.
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="grid grid-cols-2 gap-4 p-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-      {filteredMovies.length > 0 ? filteredMovies.map(movie => (
+    <div className="content-grid">
+      {filteredMovies.map(movie => (
         <Link
-          href={{
-            pathname: `/movies/${movie.id}`
-          }}
+          href={`/movies/${movie.id}`}
           key={movie.id}
-          className="hover:transform-[scale(1.05)] transition-all duration-150 ease-in-out"
+          className="block transform transition-all duration-300 hover:scale-105"
         >
           <MovieCard
             title={movie.title || ""}
-            posterImage={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "https://placehold.co/600x900/000000/FFFFFF/png"}
+            posterImage={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "https://placehold.co/600x900/1a1a1a/666666/png?text=No+Image"}
             genres={[]}
             overiew={movie.overview || ""} 
             releaseDate={movie.release_date ? new Date(movie.release_date) : new Date()}
             voteAverage={movie.vote_average || 0}
           />
         </Link>
-      )) : (
-        <div className="col-span-full text-center">
-            <p className="text-white">No movies found.</p>
-        </div>
-      )}
+      ))}
     </div>
   );
 }

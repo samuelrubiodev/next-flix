@@ -23,6 +23,7 @@ import TvShows from "../components/ui/Actions/TvShows/TvShows";
 import ActionsManager from "@/actions/ActionsManager";
 import FilterRadioGroupElement from "../components/ui/Filter/RadioElement/FilterRadioGroupElement";
 import FilterRadioElement from "../components/ui/Filter/RadioElement/FilterRadioElement";
+import { Sparkles, TrendingUp } from "lucide-react";
 
 const actions: IAction<MovieResult[] | TvResult[]>[] = [
   new MoviesAction(Movies),
@@ -31,7 +32,6 @@ const actions: IAction<MovieResult[] | TvResult[]>[] = [
 
 function HomeContent() {
   const searchParams = useSearchParams();
-
   const router = useRouter();
   const [allActions, setActions] = useState<ActionsManager>(new ActionsManager());
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || "");
@@ -95,7 +95,12 @@ function HomeContent() {
 
   const filteredContent = () => {
     if (isLoading) {
-      return <OrbitProgress color="blue" size="large" easing="ease-in-out" />
+      return (
+        <div className="flex flex-col items-center justify-center py-20 space-y-4">
+          <OrbitProgress color="#e50914" size="large" easing="ease-in-out" />
+          <p className="text-gray-400">Loading amazing content...</p>
+        </div>
+      );
     }
 
     return allActions.getActionElement(
@@ -104,30 +109,32 @@ function HomeContent() {
   };
 
   return (
-    <div>
-      <div className="flex">
-        <SearchMovie
-          text={searchTerm}
-          onSearchChange={(term: string) => {
-            router.push(`/home?entertainmentContent=${actionSelected}&search=${term}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
-          }}
-        />
-        <div className="flex flex-col items-center self-center">
-          <Filter onClick={(isActive: boolean) => setFilterActive(isActive)} />
-        </div>
-      </div>
-      <div className='relative flex flex-row items-center self-center'>
-        {isFilterActive 
-          ? <div className="bg-zinc-400/30 w-full ml-3 mt-2 pb-2 pt-2 border-0 rounded-sm flex items-center justify-around
-            2xl:mr-24
-            xl:mr-24
-            lg:mr-20
-            md:mr-15
-            sm:mr-10
-          ">
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-black via-gray-900 to-black py-12">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.02"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-20"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-6">
+          {/* Search Section */}
+          <div className="flex flex-col lg:flex-row items-center gap-6 mb-8">
+            <div className="flex-1 max-w-2xl">
+              <SearchMovie
+                text={searchTerm}
+                onSearchChange={(term: string) => {
+                  router.push(`/home?entertainmentContent=${actionSelected}&search=${term}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
+                }}
+                label="Discover your next favorite movie or show..."
+              />
+            </div>
+            <Filter onClick={(isActive: boolean) => setFilterActive(isActive)} />
+          </div>
+
+          {/* Filter Panel */}
+          {isFilterActive && (
+            <div className="filter-slide-in glass p-6 rounded-2xl mb-8">
               <FilterGroupElement row>
                 <FilterRadioGroupElement>
-                  <FilterLabelElement>Adult</FilterLabelElement>
+                  <FilterLabelElement>Adult Content</FilterLabelElement>
                   <FilterRadioElement name="adult">Yes</FilterRadioElement>
                   <FilterRadioElement name="adult">No</FilterRadioElement>
                 </FilterRadioGroupElement>
@@ -148,50 +155,68 @@ function HomeContent() {
                   </FilterSelectGroupElement>
                 </FilterGroup>
                 <FilterGroup>
-                  <FilterLabelElement>Sort</FilterLabelElement>
+                  <FilterLabelElement>Sort By</FilterLabelElement>
                   <FilterSelectGroupElement name="order">
                     <FilterSelectElement value="Select order">Select order</FilterSelectElement>
                     <FilterSelectElement value="Popularity">Popularity</FilterSelectElement>
                   </FilterSelectGroupElement>
                 </FilterGroup>
-                <FilterButtonElement>Submit</FilterButtonElement>
+                <FilterButtonElement>Apply Filters</FilterButtonElement>
               </FilterGroupElement>
             </div>
-          : null
-        }
-      </div>
-      <div className="flex flex-row items-center h-full w-full">
-        <h1 className="text-3xl mt-5 mb-5 ml-2 2xl:text-3xl lg:text-2xl md:text-xl sm:text-sm max-sm:text-xs">Popular</h1>
-        {!isLoading 
-          ? <Switch 
-              className="flex justify-center ml-2 w-60 h-10
-                2xl:w-60 2xl:h-10 
-                lg:w-40 lg:h-12
-                md:w-35 md:h-9
-                sm:w-30 sm:h-7"
-              onChange={(index) => {
-                router.push(`/home?entertainmentContent=${index}&search=${searchTerm}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
-              }}
-              selectedIndex={actionSelected}
-            >
-              <p className="2xl:text-2xl lg:text-lg md:text-xl sm:text-xs max-sm:text-xs">Movies</p>
-              <p className="2xl:text-2xl lg:text-lg md:text-xl sm:text-xs max-sm:text-xs">TV Shows</p>
-            </Switch> 
-          : null}
+          )}
+
+          {/* Header Section */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 mb-8">
+            <div className="flex items-center space-x-3">
+              <div className="p-3 bg-gradient-to-br from-red-600 to-red-800 rounded-xl">
+                <TrendingUp size={28} className="text-white" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold text-white mb-2">
+                  Popular Content
+                </h1>
+                <p className="text-gray-400">Discover what's trending now</p>
+              </div>
+            </div>
+            
+            {!isLoading && (
+              <Switch 
+                className="w-80 h-14"
+                onChange={(index) => {
+                  router.push(`/home?entertainmentContent=${index}&search=${searchTerm}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
+                }}
+                selectedIndex={actionSelected}
+              >
+                <div className="flex items-center space-x-2">
+                  <Sparkles size={18} />
+                  <span>Movies</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Sparkles size={18} />
+                  <span>TV Shows</span>
+                </div>
+              </Switch>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="flex flex-row justify-around overflow-x-scroll overflow-y-hidden h-full 
-        pl-5 pr-5 pb-5 pt-5 rounded-2xl border-0 mr-2 ml-2 bg-transparent"
-      >
+      {/* Content Section */}
+      <div className="max-w-7xl mx-auto px-6 py-8">
         {filteredContent()}
       </div>
-      <Page 
-        onChange={(page) => {
-          router.push(`/home?entertainmentContent=${actionSelected}&search=${searchTerm}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
-        }}
-        defaultPage={page}
-        pages={[1,2,3,4]}
-      />
+
+      {/* Pagination */}
+      <div className="max-w-7xl mx-auto px-6 pb-12">
+        <Page 
+          onChange={(page) => {
+            router.push(`/home?entertainmentContent=${actionSelected}&search=${searchTerm}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
+          }}
+          defaultPage={page}
+          pages={[1,2,3,4]}
+        />
+      </div>
     </div>
   );
 }
@@ -200,11 +225,13 @@ export default function Home() {
   return (
     <Suspense 
       fallback={
-        <OrbitProgress 
-          color="blue" 
-          size="large" 
-          easing="ease-in-out" 
-        />
+        <div className="flex items-center justify-center min-h-screen">
+          <OrbitProgress 
+            color="#e50914" 
+            size="large" 
+            easing="ease-in-out" 
+          />
+        </div>
       }
     >
       <HomeContent />

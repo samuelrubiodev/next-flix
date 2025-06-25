@@ -13,25 +13,27 @@ export default function Filter(props: FilterProps) {
 
   return (
     <div className='flex self-center'>
-      <div className='flex flex-row items-center ml-5 mr-5'>
+      <button 
+        className={`p-3 rounded-xl transition-all duration-300 ${
+          isActive 
+            ? 'bg-red-600 text-white shadow-lg shadow-red-600/30' 
+            : 'glass text-gray-300 hover:text-white hover:bg-white/20'
+        }`}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onClick={() => {
+          const isFilterActive = !isActive;
+          props.onClick(isFilterActive);
+          setActive(isFilterActive);
+        }}
+      >
         <Funnel 
-          size={40} 
-          color={isHover ? "black" : "white"} 
-          className="hover:cursor-pointer hover:bg-white h-12 w-12 hover:rounded-sm border-0 pb-2 pt-2 
-            transition-colors duration-150 ease-in-out" 
-          onMouseEnter={() => setHover(true)}
-          onMouseLeave={() => setHover(false)}
-          onClick={() => {
-            const isFilterActive = isActive 
-                ? false
-                : true;
-
-            props.onClick(isFilterActive);
-            setActive(isFilterActive);
-          }}
+          size={24} 
+          className={`transition-transform duration-300 ${
+            isActive ? 'rotate-180' : ''
+          }`}
         />
-      </div>
+      </button>
     </div>
-    
   )
 }

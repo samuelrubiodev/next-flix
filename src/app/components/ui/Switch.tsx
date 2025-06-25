@@ -18,15 +18,26 @@ export default function Switch(props: SwitchProps) {
 
   return (
     <div className={props.className}>
-      <div className={`flex rounded-2xl border-0 bg-zinc-600  w-full h-full`}>
-        <div 
-          className="flex items-center h-full w-full justify-around"
-          >
+      <div className="glass flex rounded-2xl p-1 w-full h-full">
+        <div className="flex items-center h-full w-full justify-around relative">
+          {/* Sliding indicator */}
+          <div 
+            className="absolute top-1 bottom-1 bg-gradient-to-r from-red-600 to-red-700 rounded-xl transition-all duration-300 ease-out shadow-lg"
+            style={{
+              left: `${(selectedIndex || 0) * 50}%`,
+              width: '50%',
+              transform: 'translateX(2px)',
+              right: 'auto'
+            }}
+          />
+          
           {props.children.map((children, i) => (
-            <div 
-              className={`text-xl ml-2 rounded-sm pl-2 pr-2 border-0 hover:cursor-pointer hover:bg-zinc-800 ${
-                selectedIndex === i ? 'bg-zinc-800/50' : 'bg-transparent'
-              } transition-all duration-150 ease-in-out`}
+            <button 
+              className={`relative z-10 font-semibold rounded-xl px-4 py-2 transition-all duration-300 ${
+                selectedIndex === i 
+                  ? 'text-white' 
+                  : 'text-gray-400 hover:text-white'
+              }`}
               key={i}
               onClick={() => {
                 setSelectedIndex(i);
@@ -34,10 +45,10 @@ export default function Switch(props: SwitchProps) {
               }}
             >
               {children}
-            </div>
+            </button>
           ))}
-          </div>
+        </div>
       </div>
     </div>
   );
-};
+}
