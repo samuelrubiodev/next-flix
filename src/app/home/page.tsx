@@ -23,7 +23,6 @@ import TvShows from "../components/ui/Actions/TvShows/TvShows";
 import ActionsManager from "@/actions/ActionsManager";
 import FilterRadioGroupElement from "../components/ui/Filter/RadioElement/FilterRadioGroupElement";
 import FilterRadioElement from "../components/ui/Filter/RadioElement/FilterRadioElement";
-import { Sparkles, TrendingUp } from "lucide-react";
 
 const actions: IAction<MovieResult[] | TvResult[]>[] = [
   new MoviesAction(Movies),

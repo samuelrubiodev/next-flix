@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Github, CircleUserRound, HomeIcon, Heart } from 'lucide-react';
+import { Github, CircleUserRound, HomeIcon } from 'lucide-react';
 
 export default function Footer() {
   return (
