@@ -31,6 +31,7 @@ const actions: IAction<MovieResult[] | TvResult[]>[] = [
 
 function HomeContent() {
   const searchParams = useSearchParams();
+
   const router = useRouter();
   const [allActions, setActions] = useState<ActionsManager>(new ActionsManager());
   const [searchTerm, setSearchTerm] = useState(() => searchParams.get('search') || "");
@@ -61,7 +62,7 @@ function HomeContent() {
     const page = Number(searchParams.get('page')) || 1;
     const adult: boolean = searchParams.get('adult') === "true";
     const genres: string = searchParams.get("genres") || "";
-    const calification = searchParams.get("calification") || "";
+    const calification = searchParams.get("certification") || "";
     const order = searchParams.get("order") || "";
 
     const numericEntertainmentContent = Number(currentEntertainmentContent);
@@ -94,12 +95,7 @@ function HomeContent() {
 
   const filteredContent = () => {
     if (isLoading) {
-      return (
-        <div className="flex flex-col items-center justify-center py-20 space-y-4">
-          <OrbitProgress color="#e50914" size="large" easing="ease-in-out" />
-          <p className="text-gray-400">Loading amazing content...</p>
-        </div>
-      );
+      return <OrbitProgress color="blue" size="large" easing="ease-in-out" />
     }
 
     return allActions.getActionElement(
@@ -113,7 +109,7 @@ function HomeContent() {
         <SearchMovie
           text={searchTerm}
           onSearchChange={(term: string) => {
-            router.push(`/home?entertainmentContent=${actionSelected}&search=${term}&page=${page}&genres=${genre}&califications=${calification}&order=${sort}`);
+            router.push(`/home?entertainmentContent=${actionSelected}&search=${term}&page=${page}&genres=${genre}&certification=${calification}&order=${sort}`);
           }}
         />
         <div className="flex flex-col items-center self-center">
@@ -131,7 +127,7 @@ function HomeContent() {
           ">
               <FilterGroupElement row>
                 <FilterRadioGroupElement>
-                  <FilterLabelElement>Adult Content</FilterLabelElement>
+                  <FilterLabelElement>Adult</FilterLabelElement>
                   <FilterRadioElement name="adult">Yes</FilterRadioElement>
                   <FilterRadioElement name="adult">No</FilterRadioElement>
                 </FilterRadioGroupElement>
@@ -144,21 +140,21 @@ function HomeContent() {
                   </FilterSelectGroupElement>
                 </FilterGroup>
                 <FilterGroup>
-                  <FilterLabelElement>Calification</FilterLabelElement>
-                  <FilterSelectGroupElement name="califications">
+                  <FilterLabelElement>Certification</FilterLabelElement>
+                  <FilterSelectGroupElement name="certification">
                     {CALIFICATION.map((calification,id) => (
                       <FilterSelectElement value={calification} key={id}>{calification}</FilterSelectElement>
                     ))}
                   </FilterSelectGroupElement>
                 </FilterGroup>
                 <FilterGroup>
-                  <FilterLabelElement>Sort By</FilterLabelElement>
+                  <FilterLabelElement>Sort</FilterLabelElement>
                   <FilterSelectGroupElement name="order">
                     <FilterSelectElement value="Select order">Select order</FilterSelectElement>
                     <FilterSelectElement value="Popularity">Popularity</FilterSelectElement>
                   </FilterSelectGroupElement>
                 </FilterGroup>
-                <FilterButtonElement>Apply Filters</FilterButtonElement>
+                <FilterButtonElement>Submit</FilterButtonElement>
               </FilterGroupElement>
             </div>
           : null
@@ -184,8 +180,9 @@ function HomeContent() {
           : null}
       </div>
 
-      {/* Content Section */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      <div className="flex flex-row justify-around overflow-x-scroll overflow-y-hidden h-full 
+        pl-5 pr-5 pb-5 pt-5 rounded-2xl border-0 mr-2 ml-2 bg-transparent"
+      >
         {filteredContent()}
       </div>
       <Page 
@@ -203,13 +200,11 @@ export default function Home() {
   return (
     <Suspense 
       fallback={
-        <div className="flex items-center justify-center min-h-screen">
-          <OrbitProgress 
-            color="#e50914" 
-            size="large" 
-            easing="ease-in-out" 
-          />
-        </div>
+        <OrbitProgress 
+          color="blue" 
+          size="large" 
+          easing="ease-in-out" 
+        />
       }
     >
       <HomeContent />

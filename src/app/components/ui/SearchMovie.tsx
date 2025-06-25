@@ -12,7 +12,6 @@ export type SearchMovieProps = {
 
 export default function SearchMovie(props: SearchMovieProps) {
   const [searchTerm, setSearchTerm] = useState(props.text || "");
-  const [isFocused, setIsFocused] = useState(false);
   
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchTerm = event.target.value;
@@ -21,45 +20,37 @@ export default function SearchMovie(props: SearchMovieProps) {
   }
 
   return (
-    <div className={`relative flex items-center w-full transition-all duration-300 ${
-      isFocused ? 'transform scale-105' : ''
-    }`}>
-      <div className="relative w-full">
-        <Search 
-          size={20} 
-          className={`absolute left-4 top-1/2 transform -translate-y-1/2 transition-colors duration-300 ${
-            isFocused ? 'text-red-500' : 'text-gray-400'
-          }`} 
-        />
+    <div className="bg-zinc-400/30 h-15 ml-2 mr-2 mt-1 focus-within:text-[#c3defd] rounded-lg border-2 
+        border-black flex flex-row items-center justify-center p-2 
+        focus-within:bg-zinc-400/50 transition-colors duration-150 ease-in-out flex-grow"
+      >
+        <Search size={30} color="white" />
         <input 
           type="text" 
-          className={`search-input w-full pl-12 pr-12 py-3 text-white placeholder-gray-400 transition-all duration-300 ${
-            isFocused ? 'bg-white/20 border-red-500 shadow-lg shadow-red-500/20' : ''
-          }`}
-          placeholder={props.label || "Search movies & shows..."}
+          id="input" 
+          name="search" 
+          className="bg-transparent text-zinc-300 w-full ml-2 pr-2 focus:outline-none focus:ring-0 focus-within:border-none border-none" 
+          placeholder={props.label || "Enter movie or series"}
           spellCheck={false}
           value={searchTerm}
           onChange={handleInputChange}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" && props.onKeyPressEnter) {
-              props.onKeyPressEnter(searchTerm);
-            }
+          onKeyDownCapture={(event) => {
+            if (event.nativeEvent instanceof KeyboardEvent 
+              && event.nativeEvent.key === "Enter" && props.onKeyPressEnter) props.onKeyPressEnter(searchTerm);
           }}
         />
-        {searchTerm !== "" && (
-          <button
-            onClick={() => {
-              setSearchTerm("");
-              props.onSearchChange("");
-            }}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors duration-300 hover:scale-110"
-          >
-            <X size={20} />
-          </button>
-        )}
-      </div>
+        {searchTerm !== "" 
+          ? <X 
+              size={30} 
+              color="white" 
+              onClick={() => {
+                setSearchTerm("");
+                props.onSearchChange("");
+              }}
+              className="hover:cursor-pointer"
+            />
+          : null
+        }
     </div>
   );
 }

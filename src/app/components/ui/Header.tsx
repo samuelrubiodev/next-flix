@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link"
-import { CircleUserRound, HomeIcon, Film } from 'lucide-react';
+import { CircleUserRound, HomeIcon } from 'lucide-react';
 import { useState } from "react";
+import Image from "next/image";
 import SearchMovie from "./SearchMovie";
 import { useRouter } from "next/navigation";
 
@@ -11,65 +12,58 @@ export default function Header() {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="sticky top-0 z-50">
-      <header className="header-blur flex items-center justify-between px-6 py-4 w-full">
-        {/* Logo Section */}
-        <div className="flex items-center space-x-3">
-          <div className="p-2 bg-gradient-to-br from-red-600 to-red-800 rounded-xl">
-            <Film size={28} className="text-white" />
-          </div>
-          <h1 className="gradient-text text-2xl font-bold tracking-tight">
-            NextFlix
-          </h1>
+    <div>
+      <header className="flex items-center justify-around bg-black w-full h-17">
+        <div className="flex flex-row">
+          <Image src="/film.svg" height={40} width={40} alt="Icon app"/>
+          <h1 className="m-5
+            2xl:text-3xl xl:text-2xl md:text-xl sm:text-sm max-sm:text-xs
+            text-white">Next Flix</h1>
         </div>
         
-        {/* Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <Link className="
+          p-1 isolate rounded-sm text-zinc-300 transition-colors hover:text-white hover:bg-zinc-600 flex flex-row items-center
+          2xl:text-2xl xl:text-xl sm:text-sm" href={"/home"}>
+          <HomeIcon size={20} className="mr-2"/>
+          <p>Home</p>
+        </Link>
+        <div className="w-100 flex justify-around">
           <Link 
-            className="nav-link flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300" 
-            href="/home"
-          >
-            <HomeIcon size={18} />
-            <span>Home</span>
+            className="p-1 isolate rounded-sm text-zinc-300 transition-colors hover:text-white hover:bg-zinc-600
+            2xl:text-2xl xl:text-xl sm:text-sm" 
+            href={"/home?entertainmentContent=0"}
+            >
+              <p>Movies</p>
           </Link>
-          
           <Link 
-            className="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300" 
-            href="/home?entertainmentContent=0"
+            className="p-1 isolate rounded-sm text-zinc-300 transition-colors hover:text-white hover:bg-zinc-600
+            2xl:text-2xl xl:text-xl sm:text-sm"  
+            href={"/home?entertainmentContent=1"}
           >
-            Movies
+            <p>TV Shows</p>
           </Link>
-          
-          <Link 
-            className="nav-link px-4 py-2 rounded-lg text-gray-300 hover:text-white hover:bg-white/10 transition-all duration-300"  
-            href="/home?entertainmentContent=1"
-          >
-            TV Shows
-          </Link>
-        </nav>
+        </div>
 
-        {/* Search Bar */}
-        <div className="flex-1 max-w-md mx-6">
+        <div className="flex flex-row items-center 2xl:w-80 lg:w-60 sm:w-30 max-sm:w-20">
           <SearchMovie 
             onSearchChange={setSearch}
-            label="Search movies & shows..."
+            label="Enter movie for search"
             onKeyPressEnter={(term) => {
               if (term !== "") router.push(`/home/results?search=${term}`)
             }}
             text={search}
           />
         </div>
-
-        {/* User Account */}
         <Link 
-          className="btn-primary flex items-center space-x-2 px-4 py-2" 
-          href="https://github.com/samuelrubiodev" 
-          target="_blank"
-        >
-          <CircleUserRound size={20} />
-          <span className="hidden sm:inline">Account</span>
+          className="m-5 text-xl flex flex-row items-center bg-white p-1.5 text-zinc-800 rounded-sm border-0 hover:bg-gray-200
+          2xl:h-10 md:h-9 sm:h-8" 
+          href={"https://github.com/samuelrubiodev"} 
+          target="_blank">
+            <CircleUserRound size={30} className="mr-2" />
+            <p className="2xl:text-xl lg:text-xs sm:text-xs max-sm:text-xs">My Account</p>
         </Link>
       </header>
+      <hr className="text-zinc-700 mb-0.5"/>
     </div>
   );
 }
