@@ -8,7 +8,6 @@ export default class ActionsManager {
     private actions: IAction<unknown>[] = []
 
     public async addAction(action: IAction<unknown>, params: RequestParams) {
-        this.actions.splice(1,this.actions.length);
         this.actions.push(action);
 
         await action.sendRequest(params);
