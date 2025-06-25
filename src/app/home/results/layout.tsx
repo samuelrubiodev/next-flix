@@ -8,7 +8,7 @@ const firaSans = Fira_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Results of search | NextFlix",
+  title: "Home | NextFlix",
   description: "A web application for viewing movie information with the api of TMDB",
   authors: [
     {
